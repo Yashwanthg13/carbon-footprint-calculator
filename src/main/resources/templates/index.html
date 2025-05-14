@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>EcoCalc - Smart Carbon Footprint Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #1b5e20;
+            --secondary-color: #2e7d32;
+            --accent-color: #43a047;
+            --light-green: #c8e6c9;
+            --dark-green: #1b5e20;
+            --gradient-start: #e8f5e9;
+            --gradient-end: #c8e6c9;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-150%); }
+            100% { transform: translateX(150%); }
+        }
+
+        * {
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .calculator-header {
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(27, 94, 32, 0.1);
+        }
+
+        .calculator-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .calculator-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }
+
+        .calculator-header h1:hover {
+            transform: scale(1.05);
+        }
+
+        .calculator-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(27, 94, 32, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .calculator-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(27, 94, 32, 0.2);
+        }
+
+        .form-control {
+            border: 2px solid var(--light-green);
+            border-radius: 10px;
+            padding: 12px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-control:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(67, 160, 71, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(67, 160, 71, 0.3);
+            transform: scale(1.02);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            border: none;
+            padding: 15px 30px;
+            font-weight: 600;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(27, 94, 32, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease-out;
+        }
+
+        .btn-primary:hover::after {
+            transform: scale(1);
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(27, 94, 32, 0.15);
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover .metric-icon {
+            animation: pulse 1s infinite;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tip-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .tip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(27, 94, 32, 0.15);
+        }
+
+        .tip-card:hover::before {
+            left: 100%;
+        }
+
+        .tip-card i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .tip-card:hover i {
+            animation: float 2s infinite;
+            color: var(--primary-color);
+        }
+
+        .chart-container {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .calculator-container {
+                padding: 15px;
+            }
+            
+            .metric-card {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid px-4">
+        <div class="calculator-header">
+            <h1>🌿 EcoCalc</h1>
+            <p class="lead" style="font-size: 1.1rem;">Smart Carbon Footprint Calculator</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Input Section -->
+            <div class="col-md-6">
+                <div class="calculator-container">
+                    <h4 class="section-title">
+                        <i class="fas fa-keyboard"></i>
+                        Input Data
+                    </h4>
+                    <form th:action="@{/calculate}" th:object="${inputData}" method="post" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="householdSize" class="form-label">
+                                <i class="fas fa-users me-2"></i>Household Size
+                            </label>
+                            <input type="number" class="form-control" id="householdSize" th:field="*{householdSize}" min="1" required>
+                            <div class="form-text">Number of people in your household</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="electricityUsage" class="form-label">
+                                <i class="fas fa-bolt me-2"></i>Monthly Electricity (kWh)
+                            </label>
+                            <input type="number" class="form-control" id="electricityUsage" th:field="*{electricityUsage}" step="0.01" min="0" required>
+                            <div class="form-text">Average: 500-1000 kWh per month</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="carDistance" class="form-label">
+                                    <i class="fas fa-car me-2"></i>Car (km)
+                                </label>
+                                <input type="number" class="form-control" id="carDistance" th:field="*{carDistance}" step="0.01" min="0" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="busDistance" class="form-label">
+                                    <i class="fas fa-bus me-2"></i>Bus (km)
+                                </label>
+                                <input type="number" class="form-control" id="busDistance" th:field="*{busDistance}" step="0.01" min="0" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="trainDistance" class="form-label">
+                                    <i class="fas fa-train me-2"></i>Train (km)
+                                </label>
+                                <input type="number" class="form-control" id="trainDistance" th:field="*{trainDistance}" step="0.01" min="0" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="meatConsumption" class="form-label">
+                                    <i class="fas fa-drumstick-bite me-2"></i>Monthly Meat (kg)
+                                </label>
+                                <input type="number" class="form-control" id="meatConsumption" th:field="*{meatConsumption}" step="0.1" min="0" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="wasteGeneration" class="form-label">
+                                    <i class="fas fa-trash me-2"></i>Monthly Waste (kg)
+                                </label>
+                                <input type="number" class="form-control" id="wasteGeneration" th:field="*{wasteGeneration}" step="0.1" min="0" required>
+                                <div class="form-text">Average: 50-100 kg per month</div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calculator me-2"></i>Calculate Footprint
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Analysis Section -->
+            <div class="col-md-6">
+                <div class="calculator-container">
+                    <h4 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        Analysis
+                    </h4>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="metric-card h-100">
+                                <div class="metric-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h6>Total Household Emissions</h6>
+                                <p class="h3 text-primary mb-0" th:text="${result + ' kg CO₂'}">0 kg CO₂</p>
+                                <small class="text-muted">Monthly estimate</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="metric-card h-100">
+                                <div class="metric-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h6>Per Person Emissions</h6>
+                                <p class="h3 text-success mb-0" th:text="${perPerson + ' kg CO₂'}">0 kg CO₂</p>
+                                <small class="text-muted">Per person monthly</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="metric-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h6>Electricity</h6>
+                                <p class="h5 mb-0" th:text="${electricityEmissions + ' kg CO₂'}">0 kg CO₂</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="metric-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <h6>Travel</h6>
+                                <p class="h5 mb-0" th:text="${travelEmissions + ' kg CO₂'}">0 kg CO₂</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="metric-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-drumstick-bite"></i>
+                                </div>
+                                <h6>Food</h6>
+                                <p class="h5 mb-0" th:text="${meatEmissions + ' kg CO₂'}">0 kg CO₂</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="metric-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-trash"></i>
+                                </div>
+                                <h6>Waste</h6>
+                                <p class="h5 mb-0" th:text="${wasteEmissions + ' kg CO₂'}">0 kg CO₂</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualization Section -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="calculator-container">
+                    <h4 class="section-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Visualizations
+                    </h4>
+                    <div class="row justify-content-evenly align-items-center">
+                        <div class="col-md-5">
+                            <div class="metric-card text-center">
+                                <h6 class="text-primary mb-4">Emission Sources Distribution</h6>
+                                <div class="chart-container mx-auto">
+                                    <canvas id="emissionsPieChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="metric-card text-center">
+                                <h6 class="text-primary mb-4">Monthly Emissions by Source</h6>
+                                <div class="chart-container mx-auto">
+                                    <canvas id="emissionsBarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="calculator-container">
+                    <h4 class="section-title mb-4">
+                        <i class="fas fa-leaf"></i>
+                        Eco-Friendly Tips
+                    </h4>
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="tip-card">
+                                <i class="fas fa-lightbulb text-warning"></i>
+                                <h6>Energy Savings</h6>
+                                <p>Switch to LED bulbs and energy-efficient appliances to reduce electricity consumption by up to 80%</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="tip-card">
+                                <i class="fas fa-bus text-success"></i>
+                                <h6>Smart Travel</h6>
+                                <p>Use public transportation, carpooling, or cycling for shorter distances to minimize emissions</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="tip-card">
+                                <i class="fas fa-leaf text-primary"></i>
+                                <h6>Sustainable Diet</h6>
+                                <p>Consider plant-based meals and reduce meat consumption to lower your carbon footprint</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="tip-card">
+                                <i class="fas fa-recycle text-info"></i>
+                                <h6>Waste Management</h6>
+                                <p>Practice recycling, composting, and minimize single-use plastics to reduce waste impact</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script th:inline="javascript">
+        // Chart configuration
+        const electricityEmissions = /*[[${electricityEmissions}]]*/ 0;
+        const travelEmissions = /*[[${travelEmissions}]]*/ 0;
+        const meatEmissions = /*[[${meatEmissions}]]*/ 0;
+        const wasteEmissions = /*[[${wasteEmissions}]]*/ 0;
+
+        const chartColors = {
+            electricity: { background: 'rgba(255, 213, 79, 0.8)', border: '#ffd54f' },
+            travel: { background: 'rgba(76, 175, 80, 0.8)', border: '#4caf50' },
+            meat: { background: 'rgba(255, 112, 67, 0.8)', border: '#ff7043' },
+            waste: { background: 'rgba(120, 144, 156, 0.8)', border: '#78909c' }
+        };
+
+        // Initialize charts when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate metric cards
+            document.querySelectorAll('.metric-card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Add 3D effect to metric cards
+            document.querySelectorAll('.metric-card').forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    this.style.transform = `
+                        perspective(1000px)
+                        rotateX(${(y - rect.height/2)/20}deg)
+                        rotateY(${-(x - rect.width/2)/20}deg)
+                        translateZ(10px)
+                    `;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+                });
+            });
+
+            // Create pie chart
+            const pieCtx = document.getElementById('emissionsPieChart').getContext('2d');
+            new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Electricity', 'Travel', 'Food', 'Waste'],
+                    datasets: [{
+                        data: [electricityEmissions, travelEmissions, meatEmissions, wasteEmissions],
+                        backgroundColor: Object.values(chartColors).map(c => c.background),
+                        borderColor: Object.values(chartColors).map(c => c.border),
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            });
+
+            // Create bar chart
+            const barCtx = document.getElementById('emissionsBarChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Electricity', 'Travel', 'Food', 'Waste'],
+                    datasets: [{
+                        label: 'CO₂ Emissions (kg)',
+                        data: [electricityEmissions, travelEmissions, meatEmissions, wasteEmissions],
+                        backgroundColor: Object.values(chartColors).map(c => c.background),
+                        borderColor: Object.values(chartColors).map(c => c.border),
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    animation: {
+                        duration: 2000
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
