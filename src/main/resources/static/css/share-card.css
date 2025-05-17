@@ -1,0 +1,299 @@
+/* Styles for shareable image cards */
+
+.share-card-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #f8faf9;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.share-card-container:hover {
+    box-shadow: 0 8px 25px rgba(45, 106, 79, 0.15);
+    transform: translateY(-5px);
+}
+
+.share-card-title {
+    color: #2d6a4f;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.share-card-title i {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+/* Instagram Card Styles */
+.instagram-card {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.instagram-card-inner {
+    background: linear-gradient(135deg, #74c69d 0%, #2d6a4f 100%);
+    padding: 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.instagram-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    z-index: 2;
+}
+
+.instagram-card-logo {
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 2rem;
+    color: #2d6a4f;
+}
+
+.instagram-card-app-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.instagram-card-content {
+    text-align: center;
+    z-index: 2;
+    padding: 1rem;
+}
+
+.instagram-card-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.instagram-card-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.instagram-card-result {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.instagram-card-result-label {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+.instagram-card-breakdown {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.breakdown-item {
+    text-align: center;
+    flex: 1;
+    min-width: 100px;
+    margin: 0.5rem;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+
+.breakdown-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.breakdown-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.instagram-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+}
+
+.instagram-card-hashtags {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.instagram-card-website {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.instagram-card-decoration {
+    position: absolute;
+    z-index: 1;
+}
+
+.decoration-leaf-1 {
+    top: -50px;
+    right: -50px;
+    font-size: 150px;
+    opacity: 0.2;
+    transform: rotate(45deg);
+}
+
+.decoration-leaf-2 {
+    bottom: -50px;
+    left: -50px;
+    font-size: 150px;
+    opacity: 0.2;
+    transform: rotate(-45deg);
+}
+
+.decoration-circle-1 {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    top: -100px;
+    left: -100px;
+}
+
+.decoration-circle-2 {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    bottom: -150px;
+    right: -150px;
+}
+
+/* Card Controls */
+.card-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.card-action-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-action-btn i {
+    margin-right: 0.5rem;
+}
+
+.download-card-btn {
+    background-color: #2d6a4f;
+    color: white;
+}
+
+.download-card-btn:hover {
+    background-color: #1b4332;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.share-instagram-btn {
+    background-color: #C13584;
+    color: white;
+}
+
+.share-instagram-btn:hover {
+    background-color: #a11d6c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Loading Animation */
+.card-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 12px;
+}
+
+.card-loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #2d6a4f;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Dark theme adjustments */
+.dark-theme .share-card-container {
+    background-color: #2b2d42;
+}
+
+.dark-theme .share-card-title {
+    color: #a8dadc;
+}
+
+.dark-theme .instagram-card-inner {
+    background: linear-gradient(135deg, #457b9d 0%, #1d3557 100%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .instagram-card-title {
+        font-size: 1.5rem;
+    }
+    
+    .instagram-card-result {
+        font-size: 2.5rem;
+    }
+    
+    .breakdown-item {
+        min-width: 80px;
+    }
+}

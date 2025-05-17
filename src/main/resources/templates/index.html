@@ -10,6 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/themes.css}">
     <link rel="stylesheet" th:href="@{/css/theme-toggle.css}">
     <link rel="stylesheet" th:href="@{/css/social-share.css}">
+    <link rel="stylesheet" th:href="@{/css/share-card.css}">
     <style>
         body {
             background: linear-gradient(135deg, #f0f7f4 0%, #e0f0ea 100%);
@@ -592,6 +593,78 @@
                                     <i class="fas fa-link"></i>
                                     <span>Copy Results Link</span>
                                 </button>
+                                
+                                <!-- Instagram Share Card Section -->
+                                <div class="share-card-container mt-4">
+                                    <div class="share-card-title">
+                                        <i class="fab fa-instagram"></i>
+                                        <span>Create Instagram Post</span>
+                                    </div>
+                                    <p class="small text-muted">Generate a beautiful image to share on Instagram!</p>
+                                    
+                                    <div class="instagram-card" id="instagramCard">
+                                        <div class="instagram-card-inner">
+                                            <!-- Card Header -->
+                                            <div class="instagram-card-header">
+                                                <div class="instagram-card-logo">
+                                                    <i class="fas fa-seedling"></i>
+                                                </div>
+                                                <div class="instagram-card-app-name">EcoCalc</div>
+                                            </div>
+                                            
+                                            <!-- Card Content -->
+                                            <div class="instagram-card-content">
+                                                <h2 class="instagram-card-title">My Carbon Footprint Results</h2>
+                                                <p class="instagram-card-subtitle">I'm taking steps to understand my environmental impact</p>
+                                                
+                                                <div class="instagram-card-result" th:text="${#numbers.formatDecimal(result.totalEmissions, 1, 1)} + ' kg CO₂'">0.0 kg CO₂</div>
+                                                <div class="instagram-card-result-label">Total Carbon Emissions</div>
+                                                
+                                                <div class="instagram-card-breakdown">
+                                                    <div class="breakdown-item">
+                                                        <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.electricityEmissions, 1, 1)}">0.0</div>
+                                                        <div class="breakdown-label">Electricity</div>
+                                                    </div>
+                                                    <div class="breakdown-item">
+                                                        <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.travelEmissions, 1, 1)}">0.0</div>
+                                                        <div class="breakdown-label">Travel</div>
+                                                    </div>
+                                                    <div class="breakdown-item">
+                                                        <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.foodEmissions, 1, 1)}">0.0</div>
+                                                        <div class="breakdown-label">Food</div>
+                                                    </div>
+                                                    <div class="breakdown-item">
+                                                        <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.wasteEmissions, 1, 1)}">0.0</div>
+                                                        <div class="breakdown-label">Waste</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Card Footer -->
+                                            <div class="instagram-card-footer">
+                                                <div class="instagram-card-hashtags">#CarbonFootprint #ClimateAction #Sustainability</div>
+                                                <div class="instagram-card-website">ecocalc.app</div>
+                                            </div>
+                                            
+                                            <!-- Decorative Elements -->
+                                            <div class="instagram-card-decoration decoration-leaf-1">🌿</div>
+                                            <div class="instagram-card-decoration decoration-leaf-2">🌱</div>
+                                            <div class="instagram-card-decoration decoration-circle-1"></div>
+                                            <div class="instagram-card-decoration decoration-circle-2"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-controls">
+                                        <button id="downloadCardBtn" class="card-action-btn download-card-btn">
+                                            <i class="fas fa-download"></i>
+                                            <span>Download Image</span>
+                                        </button>
+                                        <button id="shareInstagramBtn" class="card-action-btn share-instagram-btn">
+                                            <i class="fab fa-instagram"></i>
+                                            <span>Share to Instagram</span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="eco-tip flex-grow-1">
                                 <div class="d-flex align-items-center mb-2">
@@ -1061,6 +1134,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.1.0/chartjs-plugin-annotation.min.js"></script>
     <script th:src="@{/js/theme-toggle.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     
     <script th:if="${result != null}">
         Chart.defaults.animation = {
@@ -1335,5 +1409,8 @@
     
     <!-- Load social sharing script -->
     <script th:src="@{/js/social-share.js}"></script>
+    
+    <!-- Load Instagram share card script -->
+    <script th:src="@{/js/share-card.js}"></script>
 </body>
 </html>
