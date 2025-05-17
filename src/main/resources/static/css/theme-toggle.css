@@ -278,3 +278,208 @@ body:not(.dark-theme) .theme-transition-overlay {
 .dark-theme .theme-toggle i {
     transform: scale(1) rotate(360deg);
 }
+
+/* Interactive leaf animations */
+.leaf-spin {
+    animation: leafSpin 0.5s ease-out forwards !important;
+}
+
+.leaf-bounce {
+    animation: leafBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+}
+
+@keyframes leafSpin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.3); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes leafBounce {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.2); }
+    75% { transform: translateY(-5px) scale(0.9); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* Season-specific styles */
+:root {
+    /* Default theme colors */
+    --accent-color-primary: #74c69d;
+    --accent-color-light: #40916c;
+    --accent-color-dark: #2d6a4f;
+}
+
+/* Spring Theme */
+body.season-spring .theme-toggle {
+    background: var(--accent-color-light);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Summer Theme */
+body.season-summer .calculator-container::before {
+    background: linear-gradient(90deg, #0077b6, #00b4d8, #90e0ef);
+}
+
+/* Autumn Theme */
+body.season-autumn .calculator-container {
+    background-color: #fff9f5;
+}
+
+/* Winter Theme */
+body.season-winter .theme-leaf {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+/* Season indicator on theme toggle button */
+.season-indicator {
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+}
+
+/* Settings Panel styles */
+.settings-panel {
+    position: fixed;
+    top: 5rem;
+    right: 1.5rem;
+    width: 250px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transform: translateX(280px);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 999;
+}
+
+.settings-panel.active {
+    transform: translateX(0);
+}
+
+.settings-toggle {
+    position: fixed;
+    top: 6rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-color-light);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.settings-toggle:hover {
+    transform: scale(1.1);
+}
+
+.dark-theme .settings-toggle {
+    background: var(--accent-color-dark);
+}
+
+.settings-content {
+    padding: 1.5rem;
+}
+
+.setting-item {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.setting-item label {
+    margin: 0;
+    font-weight: 500;
+    color: #333;
+}
+
+.dark-theme .settings-panel {
+    background: #1e2430;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .setting-item label {
+    color: #e8f1f5;
+}
+
+/* Toggle switch styles */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    margin: 0;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: .4s;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--accent-color-light);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(18px);
+}
+
+.dark-theme input:checked + .toggle-slider {
+    background-color: var(--accent-color-dark);
+}
+
+/* Season select styles */
+#seasonSelect {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background: white;
+    outline: none;
+}
+
+.dark-theme #seasonSelect {
+    background: #2b2d42;
+    border-color: #444;
+    color: #e8f1f5;
+}

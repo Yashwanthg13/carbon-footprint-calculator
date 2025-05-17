@@ -211,10 +211,51 @@
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <!-- Theme Toggle Button -->
+    <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
         <i class="fas fa-moon" aria-hidden="true"></i>
         <div class="leaves-container" id="leavesContainer"></div>
+        <span class="season-indicator" id="seasonIndicator" title="Current season theme"></span>
     </button>
+    
+    <!-- Settings icon -->
+    <button id="settingsToggle" class="settings-toggle" aria-label="Open settings">
+        <i class="fas fa-cog" aria-hidden="true"></i>
+    </button>
+    
+    <!-- Settings Panel -->
+    <div id="settingsPanel" class="settings-panel">
+        <div class="settings-content">
+            <h4 class="mb-3">Settings</h4>
+            
+            <div class="setting-item">
+                <label for="soundToggle">Sound Effects</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="soundToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <label for="interactiveToggle">Interactive Leaves</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="interactiveToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <label for="seasonSelect">Season Theme</label>
+                <select id="seasonSelect">
+                    <option value="auto">Auto Detect</option>
+                    <option value="spring">Spring</option>
+                    <option value="summer">Summer</option>
+                    <option value="autumn">Autumn</option>
+                    <option value="winter">Winter</option>
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid px-4">
         <div class="calculator-container">
             <div class="text-center mb-5">
@@ -543,6 +584,10 @@
     </div>
     
     <!-- Initialize charts and features -->
+    <!-- Load seasons support before theme toggle -->
+    <script th:src="@{/js/seasons.js}"></script>
+    <script th:src="@{/js/settings-panel.js}"></script>
+    
     <script th:if="${result != null}">
 
         function updateTreeSize() {
@@ -1252,6 +1297,8 @@
             }, 500);
         });
     </script>
+    
+    <!-- Load settings panel script -->
+    <script th:src="@{/js/settings-panel.js}"></script>
 </body>
 </html>
-        }
