@@ -3,37 +3,67 @@ function createLeaf() {
     const leaf = document.createElement('div');
     leaf.className = 'theme-leaf';
     
-    // Randomize position, size, rotation and animation properties
+    // Distribute leaves across the full screen (both horizontally and vertically)
     leaf.style.left = `${Math.random() * 100}vw`;
-    leaf.style.animationDelay = `${Math.random() * 0.5}s`;
-    leaf.style.animationDuration = `${Math.random() * 3 + 2}s`; // 2-5 seconds duration
+    leaf.style.top = `${Math.random() * 100}vh`; // Position leaves throughout the screen
     
-    // Randomize size more dramatically
-    const size = Math.random() * (36 - 16) + 16;
+    // Stagger animation timing for smoother overall effect
+    leaf.style.animationDelay = `${Math.random() * 1.5}s`;
+    leaf.style.animationDuration = `${Math.random() * 4 + 3}s`; // 3-7 seconds duration for smoother motion
+    
+    // Randomize size with wider range
+    const size = Math.random() * (40 - 12) + 12;
     leaf.style.fontSize = `${size}px`;
     
-    // Add random rotation
-    leaf.style.transform = `rotate(${Math.random() * 360}deg)`;
+    // Add random initial rotation and scale for variety
+    const initialRotation = Math.random() * 360;
+    const initialScale = 0.3 + Math.random() * 0.7; // 0.3-1.0 scale
+    leaf.style.transform = `rotate(${initialRotation}deg) scale(${initialScale})`;
+    
+    // Add z-index variation for depth effect
+    leaf.style.zIndex = Math.floor(Math.random() * 10) + 990; // Between 990-999
     
     return leaf;
 }
 
-function addLeaves() {
-    const container = document.getElementById('leavesContainer');
+function addLeaves(customContainer) {
+    // Use customContainer if provided, otherwise use default container
+    const container = customContainer || document.getElementById('leavesContainer');
     container.innerHTML = '';
     
     // Expanded variety of leaf and nature emojis for more visual interest
-    const leaves = ['🍃', '🌿', '☘️', '🍂', '🍁', '🌱', '🌴', '🌳', '🌷', '🪴', '🍀'];
+    const leaves = ['🍃', '🌿', '☘️', '🍂', '🍁', '🌱', '🌴', '🌳', '🌷', '🪴', '🍀', '🌲', '🌹', '🎄'];
     
-    // Create more leaves for a denser effect
-    for (let i = 0; i < 50; i++) {
+    // Create many more leaves for full screen coverage - increase density for fullscreen mode
+    const isFullscreen = customContainer !== undefined;
+    const densityFactor = isFullscreen ? 2 : 1; // Double the leaf count for fullscreen mode
+    const leafCount = Math.max(150, Math.floor(window.innerWidth * window.innerHeight / (8000 / densityFactor)));
+    
+    console.log(`Creating ${leafCount} leaves for ${isFullscreen ? 'fullscreen' : 'regular'} mode`);
+    
+    for (let i = 0; i < leafCount; i++) {
         const leaf = createLeaf();
-        leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
         
-        // Add slight opacity variation
-        leaf.style.opacity = (Math.random() * 0.5 + 0.5).toString(); // 0.5-1.0 opacity
+        // Add variety by occasionally using different leaf types with different weights
+        const leafIndex = Math.random() < 0.7 ?
+            Math.floor(Math.random() * 5) : // More common leaves (first 5)
+            Math.floor(Math.random() * leaves.length); // All leaves
+            
+        leaf.textContent = leaves[leafIndex];
         
-        container.appendChild(leaf);
+        // Vary opacity for depth effect
+        leaf.style.opacity = (Math.random() * 0.6 + 0.4).toString(); // 0.4-1.0 opacity
+        
+        // Add special class for fullscreen mode
+        if (isFullscreen) {
+            leaf.classList.add('fullscreen-leaf');
+        }
+        
+        // Generate fresh leaves in batches for smoother appearance
+        // Use smaller batch delays for smoother appearance
+        setTimeout(() => {
+            container.appendChild(leaf);
+        }, i % 20 * 25); // Stagger leaf creation in smaller batches
     }
 }
 
@@ -53,8 +83,22 @@ function toggleTheme() {
     overlay.className = 'theme-transition-overlay';
     document.body.appendChild(overlay);
     
-    // Add leaves before theme change for dramatic effect
-    addLeaves();
+    // Create separate leaves container for fullscreen effect
+    const fullscreenLeaves = document.createElement('div');
+    fullscreenLeaves.className = 'fullscreen-leaves-container';
+    document.body.appendChild(fullscreenLeaves);
+    
+    // Prepare for animation by adding class to body
+    body.classList.add('theme-changing');
+    
+    // Add leaves across the whole screen for dramatic effect
+    const originalContainer = document.getElementById('leavesContainer');
+    const savedHTML = originalContainer.innerHTML;
+    originalContainer.innerHTML = '';
+    
+    // Use the fullscreen container for our leaves
+    document.getElementById('leavesContainer').style.display = 'none';
+    addLeaves.call(null, fullscreenLeaves);
     
     // Play a subtle sound effect if available
     const soundEffect = new Audio();
@@ -68,7 +112,7 @@ function toggleTheme() {
         console.log('Audio playback not supported');
     }
     
-    // Wait for leaves animation to get going
+    // Wait for leaves animation to get going before changing theme
     setTimeout(() => {
         // Toggle theme
         if (body.classList.contains('dark-theme')) {
@@ -85,17 +129,24 @@ function toggleTheme() {
 
         // Update charts if they exist
         updateChartsTheme();
-    }, 800); // Longer delay for better visual effect
+    }, 1500); // Longer delay for better visual effect
 
-    // Remove leaves and enable button after animation completes
+    // Remove leaves and cleanup after animation completes
     setTimeout(() => {
-        document.getElementById('leavesContainer').innerHTML = '';
+        // Clean up all animation elements
+        fullscreenLeaves.innerHTML = '';
+        document.body.removeChild(fullscreenLeaves);
+        document.body.removeChild(overlay);
+        
+        // Restore normal state
+        body.classList.remove('theme-changing');
         themeToggle.disabled = false;
         themeToggle.classList.remove('theme-toggle-pulse');
         
-        // Remove the overlay
-        document.body.removeChild(overlay);
-    }, 3000); // Longer duration for full animation effect
+        // Restore original container
+        document.getElementById('leavesContainer').style.display = '';
+        document.getElementById('leavesContainer').innerHTML = savedHTML;
+    }, 5000); // Longer duration for full animation effect
 }
 
 // Apply saved theme on page load

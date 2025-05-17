@@ -62,114 +62,170 @@
     overflow: hidden;
 }
 
+/* Fullscreen container for theme toggle animation */
+.fullscreen-leaves-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1001; /* Above other UI elements */
+    overflow: hidden;
+}
+
+/* Special state for when theme is changing */
+body.theme-changing {
+    cursor: wait; /* Show waiting cursor during animation */
+    transition: all 1s ease;
+}
+
+/* Enhance animation when in fullscreen mode */
+.fullscreen-leaf {
+    z-index: 1002; /* Above everything */
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
+}
+
 .theme-leaf {
     position: fixed;
-    top: -50px;
-    animation: leafFall 3s ease-in forwards;
+    /* Removing top: -50px as we now set position in JS */
+    animation: leafFloat 5s ease-in-out forwards;
     opacity: 0;
     transform-origin: center;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     will-change: transform, opacity; /* Performance optimization */
+    transition: transform 0.5s ease-out; /* Add smooth transform changes */
 }
 
-@keyframes leafFall {
+@keyframes leafFloat {
     0% {
         opacity: 0;
-        transform: translateY(-50px) rotate(0deg) scale(0.5);
+        transform: translateY(-10px) translateX(-10px) rotate(0deg) scale(0.3);
     }
-    10% {
-        opacity: 1;
+    5% {
+        opacity: 0.8;
     }
-    35% {
-        transform: translateY(30vh) translateX(-20px) rotate(120deg) scale(0.8);
+    30% {
+        transform: translateY(10px) translateX(15px) rotate(120deg) scale(0.8);
     }
-    65% {
-        transform: translateY(60vh) translateX(20px) rotate(240deg) scale(0.9);
+    60% {
+        transform: translateY(-15px) translateX(-15px) rotate(240deg) scale(0.9);
+        opacity: 0.9;
+    }
+    85% {
+        opacity: 0.7;
     }
     100% {
         opacity: 0;
-        transform: translateY(105vh) rotate(360deg) scale(1);
+        transform: translateY(15px) translateX(10px) rotate(360deg) scale(0.3);
     }
 }
 
-/* Add different fall paths for variety */
+/* Add different float paths for variety */
 .theme-leaf:nth-child(2n) {
-    animation-name: leafFallAlt;
+    animation-name: leafFloatAlt;
 }
 
 .theme-leaf:nth-child(3n) {
-    animation-name: leafFallAlt2;
+    animation-name: leafFloatAlt2;
 }
 
 .theme-leaf:nth-child(5n) {
-    animation-name: leafFallAlt3;
+    animation-name: leafFloatAlt3;
 }
 
-@keyframes leafFallAlt {
+.theme-leaf:nth-child(7n) {
+    animation-name: leafFloatAlt4;
+}
+
+@keyframes leafFloatAlt {
     0% {
         opacity: 0;
-        transform: translateY(-50px) rotate(0deg) scale(0.5);
+        transform: translateY(10px) translateX(5px) rotate(0deg) scale(0.4);
     }
     10% {
-        opacity: 1;
+        opacity: 0.7;
     }
-    45% {
-        transform: translateY(35vh) translateX(30px) rotate(-180deg) scale(0.8);
+    40% {
+        transform: translateY(-15px) translateX(20px) rotate(-120deg) scale(0.9);
     }
-    80% {
-        transform: translateY(80vh) translateX(-20px) rotate(-320deg) scale(0.9);
+    70% {
+        transform: translateY(15px) translateX(-10px) rotate(-240deg) scale(0.8);
+        opacity: 0.8;
     }
     100% {
         opacity: 0;
-        transform: translateY(105vh) rotate(-360deg) scale(1);
+        transform: translateY(-5px) translateX(10px) rotate(-360deg) scale(0.4);
     }
 }
 
-@keyframes leafFallAlt2 {
+@keyframes leafFloatAlt2 {
     0% {
         opacity: 0;
-        transform: translateY(-50px) rotate(0deg) scale(0.5);
+        transform: translateY(-8px) translateX(-8px) rotate(45deg) scale(0.5);
     }
     15% {
-        opacity: 1;
-        transform: translateY(10vh) translateX(-10px) rotate(60deg) scale(0.7);
+        opacity: 0.8;
     }
     35% {
-        transform: translateY(30vh) translateX(30px) rotate(180deg) scale(0.8);
+        transform: translateY(12px) translateX(18px) rotate(135deg) scale(0.9);
     }
     65% {
-        transform: translateY(60vh) translateX(-25px) rotate(270deg) scale(0.9);
+        transform: translateY(-18px) translateX(-15px) rotate(225deg) scale(0.8);
+        opacity: 0.9;
     }
     85% {
-        opacity: 0.8;
+        opacity: 0.7;
     }
     100% {
         opacity: 0;
-        transform: translateY(105vh) translateX(15px) rotate(360deg) scale(1);
+        transform: translateY(8px) translateX(8px) rotate(315deg) scale(0.5);
     }
 }
 
-@keyframes leafFallAlt3 {
+@keyframes leafFloatAlt3 {
     0% {
         opacity: 0;
-        transform: translateY(-50px) rotate(0deg) scale(0.5);
+        transform: translateY(15px) translateX(-15px) rotate(-30deg) scale(0.3);
     }
     10% {
-        opacity: 1;
+        opacity: 0.8;
     }
     30% {
-        transform: translateY(25vh) translateX(40px) rotate(-90deg) scale(0.7);
+        transform: translateY(-10px) translateX(25px) rotate(90deg) scale(0.8);
     }
-    50% {
-        transform: translateY(50vh) translateX(-30px) rotate(-180deg) scale(0.8);
+    60% {
+        transform: translateY(20px) translateX(-20px) rotate(210deg) scale(0.9);
     }
     75% {
-        transform: translateY(75vh) translateX(25px) rotate(-270deg) scale(0.9);
-        opacity: 0.8;
+        opacity: 0.7;
     }
     100% {
         opacity: 0;
-        transform: translateY(105vh) translateX(-15px) rotate(-360deg) scale(1);
+        transform: translateY(-15px) translateX(-10px) rotate(330deg) scale(0.3);
+    }
+}
+
+@keyframes leafFloatAlt4 {
+    0% {
+        opacity: 0;
+        transform: translateY(-12px) translateX(12px) rotate(60deg) scale(0.4);
+    }
+    15% {
+        opacity: 0.9;
+    }
+    40% {
+        transform: translateY(18px) translateX(-22px) rotate(150deg) scale(0.9);
+    }
+    65% {
+        transform: translateY(-15px) translateX(15px) rotate(240deg) scale(0.7);
+    }
+    85% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(10px) translateX(-10px) rotate(330deg) scale(0.4);
     }
 }
 
