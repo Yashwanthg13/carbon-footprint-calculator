@@ -59,11 +59,10 @@ function addLeaves(customContainer) {
             leaf.classList.add('fullscreen-leaf');
         }
         
-        // Generate fresh leaves in batches for smoother appearance
-        // Use smaller batch delays for smoother appearance
+        // Generate leaves almost immediately with minimal staggering for faster appearance
         setTimeout(() => {
             container.appendChild(leaf);
-        }, i % 20 * 25); // Stagger leaf creation in smaller batches
+        }, i % 10 * 10); // Very fast staggering with smaller batches
     }
 }
 
@@ -112,7 +111,7 @@ function toggleTheme() {
         console.log('Audio playback not supported');
     }
     
-    // Wait for leaves animation to get going before changing theme
+    // Wait briefly before changing theme
     setTimeout(() => {
         // Toggle theme
         if (body.classList.contains('dark-theme')) {
@@ -129,7 +128,7 @@ function toggleTheme() {
 
         // Update charts if they exist
         updateChartsTheme();
-    }, 1500); // Longer delay for better visual effect
+    }, 500); // Much faster theme change
 
     // Remove leaves and cleanup after animation completes
     setTimeout(() => {
@@ -146,7 +145,7 @@ function toggleTheme() {
         // Restore original container
         document.getElementById('leavesContainer').style.display = '';
         document.getElementById('leavesContainer').innerHTML = savedHTML;
-    }, 5000); // Longer duration for full animation effect
+    }, 1800); // Much shorter total animation time // Longer duration for full animation effect
 }
 
 // Apply saved theme on page load
