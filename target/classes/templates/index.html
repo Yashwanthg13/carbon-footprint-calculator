@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/themes.css}">
     <link rel="stylesheet" th:href="@{/css/theme-toggle.css}">
+    <link rel="stylesheet" th:href="@{/css/social-share.css}">
     <style>
         body {
             background: linear-gradient(135deg, #f0f7f4 0%, #e0f0ea 100%);
@@ -455,11 +456,11 @@
                             <div class="col-md-6">
                                 <div class="metric-card d-flex align-items-center">
                                     <i class="fas fa-home me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
-                                    <div>
-                                        <div class="metric-title">Total Household Emissions</div>
-                                        <div class="metric-value" th:text="${result.totalEmissions + ' kg CO₂'}">0</div>
-                                        <div class="help-text">Monthly estimate</div>
+                                    <div class="metric-card">
+                                        <div class="metric-title">Total Emissions</div>
+                                        <div class="metric-value" id="totalEmissionsValue" th:text="${#numbers.formatDecimal(result.totalEmissions, 1, 1)} + ' kg CO₂'">0.0 kg CO₂</div>
                                     </div>
+                                    <div class="help-text">Monthly estimate</div>
                                 </div>
                             </div>
                             
@@ -468,7 +469,7 @@
                                     <i class="fas fa-user me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
                                     <div>
                                         <div class="metric-title">Per Person Emissions</div>
-                                        <div class="metric-value" th:text="${result.perPersonEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" id="perPersonEmissionsValue" th:text="${result.perPersonEmissions + ' kg CO₂'}">0</div>
                                         <div class="help-text">Per person monthly</div>
                                     </div>
                                 </div>
@@ -554,12 +555,43 @@
                             Eco-Friendly Tips
                         </h3>
                         <div class="d-flex justify-content-between flex-wrap gap-3">
-                            <div class="eco-tip flex-grow-1">
+                            <div class="eco-tip" style="--animation-order: 1;">
                                 <div class="d-flex align-items-center mb-2">
-                                    <div class="tip-icon">🔌</div>
-                                    <h5 class="tip-title mb-0">Reduce Electricity</h5>
+                                    <div class="tip-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <h5 class="tip-title mb-0">Eco Tip</h5>
                                 </div>
-                                <p class="mb-0">Switch to LED bulbs and energy-efficient appliances. Use a programmable thermostat to optimize heating and cooling.</p>
+                                <p th:text="${ecoTip}" class="mb-0">Consider switching to LED bulbs and energy-efficient appliances to reduce your electricity consumption.</p>
+                            </div>
+                            
+                            <!-- Social Sharing Section -->
+                            <div class="social-share-container animate__animated animate__fadeIn" style="--animation-order: 2;">
+                                <div class="social-share-title">
+                                    <i class="fas fa-share-alt"></i>
+                                    <span>Share Your Carbon Footprint</span>
+                                </div>
+                                <p class="small text-muted">Spread awareness about carbon footprint and inspire others to calculate theirs!</p>
+                                
+                                <div class="social-buttons">
+                                    <button class="social-share-btn twitter" data-platform="twitter" title="Share on Twitter">
+                                        <i class="fab fa-twitter"></i>
+                                    </button>
+                                    <button class="social-share-btn facebook" data-platform="facebook" title="Share on Facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </button>
+                                    <button class="social-share-btn linkedin" data-platform="linkedin" title="Share on LinkedIn">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </button>
+                                    <button class="social-share-btn whatsapp" data-platform="whatsapp" title="Share on WhatsApp">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </button>
+                                </div>
+                                
+                                <button id="copyLinkBtn" class="copy-link-btn w-100">
+                                    <i class="fas fa-link"></i>
+                                    <span>Copy Results Link</span>
+                                </button>
                             </div>
                             <div class="eco-tip flex-grow-1">
                                 <div class="d-flex align-items-center mb-2">
@@ -1300,5 +1332,8 @@
     
     <!-- Load settings panel script -->
     <script th:src="@{/js/settings-panel.js}"></script>
+    
+    <!-- Load social sharing script -->
+    <script th:src="@{/js/social-share.js}"></script>
 </body>
 </html>
