@@ -1,4 +1,6 @@
 com\example\carbon\model\InputData.class
 com\example\carbon\controller\CarbonController.class
 com\example\carbon\CarbonFootprintCalculatorApplication.class
+com\example\carbon\config\WebConfig.class
+com\example\carbon\model\CarbonGoal.class
 com\example\carbon\model\CarbonFootprint.class

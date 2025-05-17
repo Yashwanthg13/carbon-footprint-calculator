@@ -32,9 +32,14 @@ build/
 ### VS Code ###
 .vscode/
 
-### Logs ###
+### Application Specific ###
 *.log
-build.log
-
-### Environment Variables ###
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
 .env
+.DS_Store

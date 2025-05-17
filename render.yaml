@@ -2,16 +2,13 @@ services:
   - type: web
     name: carbon-footprint-calculator
     env: docker
+    buildCommand: "./mvnw package -DskipTests"
+    startCommand: "java -jar -Dspring.profiles.active=prod target/*.jar"
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: JAVA_VERSION
-        value: "21"
-      - key: PORT
-        value: "8080"
-
-databases:
-  - name: carbon_db
-    databaseName: carbon_db
-    user: carbon_user
+    healthCheckPath: /actuator/health
     plan: free
+    branch: main
+    numInstances: 1
+    autoDeploy: true

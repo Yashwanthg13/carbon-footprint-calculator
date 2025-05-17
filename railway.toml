@@ -1,0 +1,46 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "java -jar target/carbon-0.0.1-SNAPSHOT.jar"
+healthcheckPath = "/"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+[deploy.envs]
+SPRING_PROFILES_ACTIVE = "prod"
+JAVA_OPTS = "-Xmx512m"
+
+[[services]]
+name = "carbon-footprint-calculator"
+protocol = "http"
+port = "8080"
+
+[[services.routes]]
+path = "/"
+
+[[services.autoscaling]]
+metric = "cpu"
+min = 1
+max = 3
+targetCPUUtilizationPercentage = 80
+
+[[services.volumes]]
+path = "/data"
+size = "1Gi"
+
+[deploy.lifecycle]
+preStart = [
+    "echo 'Starting Carbon Footprint Calculator'",
+    "java -version"
+]
+
+postStart = [
+    "echo 'Application started successfully'"
+]
+
+preStop = [
+    "echo 'Gracefully shutting down application'"
+]

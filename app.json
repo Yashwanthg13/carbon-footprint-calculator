@@ -1,0 +1,34 @@
+{
+  "name": "Carbon Footprint Calculator",
+  "description": "A Spring Boot application for calculating and tracking carbon footprint",
+  "repository": "https://github.com/yourusername/carbon-footprint-calculator",
+  "keywords": ["java", "spring-boot", "carbon-footprint", "sustainability"],
+  "env": {
+    "SPRING_PROFILES_ACTIVE": {
+      "description": "Spring profile to use",
+      "value": "prod"
+    },
+    "JAVA_OPTS": {
+      "description": "Java runtime options",
+      "value": "-Xmx512m"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:hobby-dev",
+      "as": "DATABASE"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/java"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  },
+  "stack": "heroku-22"
+}

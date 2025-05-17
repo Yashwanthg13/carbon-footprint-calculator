@@ -1,0 +1,134 @@
+:root {
+    --background-gradient-light: linear-gradient(135deg, #f0f7f4 0%, #e0f0ea 100%);
+    --background-gradient-dark: linear-gradient(135deg, #1e3a50 0%, #2a4858 100%);
+    --text-color-light: #333;
+    --text-color-dark: #e8f1f5;
+    --card-bg-light: white;
+    --card-bg-dark: rgba(255, 255, 255, 0.1);
+    --accent-color-light: #2d6a4f;
+    --accent-color-dark: #74c69d;
+    --input-bg-light: #f8faf9;
+    --input-bg-dark: #3d3d3d;
+    --border-color-light: #e9ecef;
+    --border-color-dark: #4d4d4d;
+}
+
+body {
+    background: var(--background-gradient-light);
+    color: var(--text-color-light);
+    transition: all 0.3s ease;
+}
+
+body.dark-theme {
+    background: var(--background-gradient-dark);
+    color: var(--text-color-dark);
+}
+
+body.dark-theme .form-label {
+    color: #9fd3c7;
+}
+
+body.dark-theme .help-text {
+    color: #95d5b2;
+}
+
+body.dark-theme .eco-tip {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+body.dark-theme .eco-tip .tip-title {
+    color: #74c69d;
+}
+
+body.dark-theme .eco-tip p {
+    color: #e8f1f5;
+}
+
+body.dark-theme .section-header {
+    color: #74c69d;
+    border-bottom-color: rgba(116, 198, 157, 0.3);
+}
+
+body.dark-theme .metric-title {
+    color: #74c69d;
+}
+
+body.dark-theme .metric-value {
+    color: #e8f1f5;
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    border: none;
+    background: var(--accent-color-light);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.dark-theme .theme-toggle {
+    background: var(--accent-color-dark);
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.calculator-container {
+    background-color: var(--card-bg-light);
+    transition: background-color 0.3s ease;
+}
+
+.dark-theme .calculator-container {
+    background-color: var(--card-bg-dark);
+}
+
+.input-section {
+    background-color: var(--input-bg-light);
+    transition: background-color 0.3s ease;
+}
+
+.dark-theme .input-section {
+    background-color: var(--input-bg-dark);
+}
+
+.form-control {
+    background-color: var(--input-bg-light);
+    color: var(--text-color-light);
+    border-color: var(--border-color-light);
+    transition: all 0.3s ease;
+}
+
+.dark-theme .form-control {
+    background-color: var(--input-bg-dark);
+    color: var(--text-color-dark);
+    border-color: var(--border-color-dark);
+}
+
+.dark-theme .text-muted {
+    color: #a0a0a0 !important;
+}
+
+.dark-theme .eco-tip {
+    background-color: #2d3436;
+    border-left-color: var(--accent-color-dark);
+}
+
+.dark-theme .metric-card {
+    background-color: var(--card-bg-dark);
+    color: var(--text-color-dark);
+}
+
+.dark-theme .chart-container {
+    background-color: var(--card-bg-dark);
+}

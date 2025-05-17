@@ -1,34 +1,33 @@
 @echo off
+setlocal
+
+echo Checking Java installation...
+where java >nul 2>nul
+if %ERRORLEVEL% NEQ 0 (
+    echo Java is not installed or not in PATH
+    exit /b 1
+)
+
 echo Setting up environment...
-
 set "JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-21.0.6.7-hotspot"
-echo Using JAVA_HOME: %JAVA_HOME%
-
-REM Change to the project directory
-cd /d "%~dp0"
+set "PATH=%JAVA_HOME%\bin;%PATH%"
 
 echo.
-echo Building the application...
-call mvnw.cmd -B clean install -DskipTests
+echo Java version:
+java -version
 
-if errorlevel 1 (
-    echo.
-    echo Error occurred during build.
-    echo Please check the build errors above.
+echo.
+echo Maven version:
+call .\mvnw.cmd --version
+
+echo.
+echo Building and running application...
+call .\mvnw.cmd clean install spring-boot:run
+
+if %ERRORLEVEL% NEQ 0 (
+    echo Build or run failed
     pause
     exit /b 1
 )
 
-echo.
-echo Starting the application...
-call mvnw.cmd -B spring-boot:run
-
-if errorlevel 1 (
-    echo.
-    echo Error occurred while running the application.
-    echo Please check the error messages above.
-    pause
-    exit /b 1
-)
-
-pause
+endlocal
