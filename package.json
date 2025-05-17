@@ -1,0 +1,8 @@
+{
+  "name": "carbon-footprint-calculator",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@netlify/plugin-java-runtime": "^1.0.0"
+  }
+}

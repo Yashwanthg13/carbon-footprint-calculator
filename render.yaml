@@ -1,14 +1,16 @@
 services:
   - type: web
     name: carbon-footprint-calculator
-    env: docker
-    buildCommand: "./mvnw package -DskipTests"
+    env: java
+    plan: free
+    buildCommand: "./mvnw clean package -DskipTests"
     startCommand: "java -jar -Dspring.profiles.active=prod target/*.jar"
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
+      - key: JAVA_VERSION
+        value: "17"
     healthCheckPath: /actuator/health
-    plan: free
     branch: main
     numInstances: 1
     autoDeploy: true
