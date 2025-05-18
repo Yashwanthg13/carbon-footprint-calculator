@@ -543,12 +543,113 @@
                         <canvas id="barChart"></canvas>
                     </div>
                 </div>
-
-                <!-- Carbon Reduction Goal Tracker -->
                 
+                <!-- Social Sharing Section -->
+                <div class="col-md-12 mt-4">
+                    <div class="social-share-container animate__animated animate__fadeIn">
+                        <div class="social-share-title">
+                            <i class="fas fa-share-alt"></i>
+                            <span>Share Your Carbon Footprint</span>
+                        </div>
+                        <p class="small text-muted">Spread awareness about carbon footprint and inspire others to calculate theirs!</p>
+                                
+                        <div class="social-buttons">
+                            <button class="social-share-btn twitter" data-platform="twitter" title="Share on Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </button>
+                            <button class="social-share-btn facebook" data-platform="facebook" title="Share on Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </button>
+                            <button class="social-share-btn linkedin" data-platform="linkedin" title="Share on LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </button>
+                            <button class="social-share-btn whatsapp" data-platform="whatsapp" title="Share on WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                        </div>
+                                
+                        <button id="copyLinkBtn" class="copy-link-btn w-100">
+                            <i class="fas fa-link"></i>
+                            <span>Copy Results Link</span>
+                        </button>
+                                
+                        <!-- Instagram Share Card Section -->
+                        <div class="share-card-container mt-4">
+                            <div class="share-card-title">
+                                <i class="fab fa-instagram"></i>
+                                <span>Create Instagram Post</span>
+                            </div>
+                            <p class="small text-muted">Generate a beautiful image to share on Instagram!</p>
+                                    
+                            <div class="instagram-card" id="instagramCard">
+                                <div class="instagram-card-inner">
+                                    <!-- Card Header -->
+                                    <div class="instagram-card-header">
+                                        <div class="instagram-card-logo">
+                                            <i class="fas fa-seedling"></i>
+                                        </div>
+                                        <div class="instagram-card-app-name">EcoCalc</div>
+                                    </div>
+                                            
+                                    <!-- Card Content -->
+                                    <div class="instagram-card-content">
+                                        <h2 class="instagram-card-title">My Carbon Footprint Results</h2>
+                                        <p class="instagram-card-subtitle">I'm taking steps to understand my environmental impact</p>
+                                        
+                                        <div class="instagram-card-result" th:text="${#numbers.formatDecimal(result.totalEmissions, 1, 1)} + ' kg CO₂'">0.0 kg CO₂</div>
+                                        <div class="instagram-card-result-label">Total Carbon Emissions</div>
+                                                
+                                        <div class="instagram-card-breakdown">
+                                            <div class="breakdown-item">
+                                                <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.electricityEmissions, 1, 1)}">0.0</div>
+                                                <div class="breakdown-label">Electricity</div>
+                                            </div>
+                                            <div class="breakdown-item">
+                                                <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.travelEmissions, 1, 1)}">0.0</div>
+                                                <div class="breakdown-label">Travel</div>
+                                            </div>
+                                            <div class="breakdown-item">
+                                                <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.foodEmissions, 1, 1)}">0.0</div>
+                                                <div class="breakdown-label">Food</div>
+                                            </div>
+                                            <div class="breakdown-item">
+                                                <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.wasteEmissions, 1, 1)}">0.0</div>
+                                                <div class="breakdown-label">Waste</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Card Footer -->
+                                    <div class="instagram-card-footer">
+                                        <div class="instagram-card-hashtags">#CarbonFootprint #ClimateAction #Sustainability</div>
+                                        <div class="instagram-card-website">ecocalc.app</div>
+                                    </div>
+                                    
+                                    <!-- Decorative Elements -->
+                                    <div class="instagram-card-decoration decoration-leaf-1">🌿</div>
+                                    <div class="instagram-card-decoration decoration-leaf-2">🌱</div>
+                                    <div class="instagram-card-decoration decoration-circle-1"></div>
+                                    <div class="instagram-card-decoration decoration-circle-2"></div>
+                                        </div>
+                                    </div>
+                                    
+                            <div class="card-controls">
+                                <button id="downloadCardBtn" class="card-action-btn download-card-btn">
+                                    <i class="fas fa-download"></i>
+                                    <span>Download Image</span>
+                                </button>
+                                <a href="https://www.instagram.com/" target="_blank" id="openInstagramBtn" class="card-action-btn share-instagram-btn">
+                                    <i class="fab fa-instagram"></i>
+                                    <span>Open Instagram</span>
+                                </a>
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
-
-                <!-- Eco-friendly Tips Section -->
+                <!-- Eco-friendly Tips Section moved to the end -->
                 <div class="col-12 eco-tips-container mt-5 mb-4">
                     <div class="eco-tips-wrapper p-4 rounded-lg">
                         <h3 class="section-header text-center mb-4">
@@ -561,110 +662,9 @@
                                     <div class="tip-icon">
                                         <i class="fas fa-lightbulb"></i>
                                     </div>
-                                    <h5 class="tip-title mb-0">Eco Tip</h5>
+                                    <h5 class="tip-title mb-0">Energy Saving</h5>
                                 </div>
-                                <p th:text="${ecoTip}" class="mb-0">Consider switching to LED bulbs and energy-efficient appliances to reduce your electricity consumption.</p>
-                            </div>
-                            
-                            <!-- Social Sharing Section -->
-                            <div class="social-share-container animate__animated animate__fadeIn" style="--animation-order: 2;">
-                                <div class="social-share-title">
-                                    <i class="fas fa-share-alt"></i>
-                                    <span>Share Your Carbon Footprint</span>
-                                </div>
-                                <p class="small text-muted">Spread awareness about carbon footprint and inspire others to calculate theirs!</p>
-                                
-                                <div class="social-buttons">
-                                    <button class="social-share-btn twitter" data-platform="twitter" title="Share on Twitter">
-                                        <i class="fab fa-twitter"></i>
-                                    </button>
-                                    <button class="social-share-btn facebook" data-platform="facebook" title="Share on Facebook">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </button>
-                                    <button class="social-share-btn linkedin" data-platform="linkedin" title="Share on LinkedIn">
-                                        <i class="fab fa-linkedin-in"></i>
-                                    </button>
-                                    <button class="social-share-btn whatsapp" data-platform="whatsapp" title="Share on WhatsApp">
-                                        <i class="fab fa-whatsapp"></i>
-                                    </button>
-                                </div>
-                                
-                                <button id="copyLinkBtn" class="copy-link-btn w-100">
-                                    <i class="fas fa-link"></i>
-                                    <span>Copy Results Link</span>
-                                </button>
-                                
-                                <!-- Instagram Share Card Section -->
-                                <div class="share-card-container mt-4">
-                                    <div class="share-card-title">
-                                        <i class="fab fa-instagram"></i>
-                                        <span>Create Instagram Post</span>
-                                    </div>
-                                    <p class="small text-muted">Generate a beautiful image to share on Instagram!</p>
-                                    
-                                    <div class="instagram-card" id="instagramCard">
-                                        <div class="instagram-card-inner">
-                                            <!-- Card Header -->
-                                            <div class="instagram-card-header">
-                                                <div class="instagram-card-logo">
-                                                    <i class="fas fa-seedling"></i>
-                                                </div>
-                                                <div class="instagram-card-app-name">EcoCalc</div>
-                                            </div>
-                                            
-                                            <!-- Card Content -->
-                                            <div class="instagram-card-content">
-                                                <h2 class="instagram-card-title">My Carbon Footprint Results</h2>
-                                                <p class="instagram-card-subtitle">I'm taking steps to understand my environmental impact</p>
-                                                
-                                                <div class="instagram-card-result" th:text="${#numbers.formatDecimal(result.totalEmissions, 1, 1)} + ' kg CO₂'">0.0 kg CO₂</div>
-                                                <div class="instagram-card-result-label">Total Carbon Emissions</div>
-                                                
-                                                <div class="instagram-card-breakdown">
-                                                    <div class="breakdown-item">
-                                                        <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.electricityEmissions, 1, 1)}">0.0</div>
-                                                        <div class="breakdown-label">Electricity</div>
-                                                    </div>
-                                                    <div class="breakdown-item">
-                                                        <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.travelEmissions, 1, 1)}">0.0</div>
-                                                        <div class="breakdown-label">Travel</div>
-                                                    </div>
-                                                    <div class="breakdown-item">
-                                                        <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.foodEmissions, 1, 1)}">0.0</div>
-                                                        <div class="breakdown-label">Food</div>
-                                                    </div>
-                                                    <div class="breakdown-item">
-                                                        <div class="breakdown-value" th:text="${#numbers.formatDecimal(result.wasteEmissions, 1, 1)}">0.0</div>
-                                                        <div class="breakdown-label">Waste</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <!-- Card Footer -->
-                                            <div class="instagram-card-footer">
-                                                <div class="instagram-card-hashtags">#CarbonFootprint #ClimateAction #Sustainability</div>
-                                                <div class="instagram-card-website">ecocalc.app</div>
-                                            </div>
-                                            
-                                            <!-- Decorative Elements -->
-                                            <div class="instagram-card-decoration decoration-leaf-1">🌿</div>
-                                            <div class="instagram-card-decoration decoration-leaf-2">🌱</div>
-                                            <div class="instagram-card-decoration decoration-circle-1"></div>
-                                            <div class="instagram-card-decoration decoration-circle-2"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="card-controls">
-                                        <button id="downloadCardBtn" class="card-action-btn download-card-btn">
-                                            <i class="fas fa-download"></i>
-                                            <span>Download Image</span>
-                                        </button>
-                                        <button id="shareInstagramBtn" class="card-action-btn share-instagram-btn">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>Share to Instagram</span>
-                                        </button>
-                                    </div>
-                                </div>
+                                <p class="mb-0">Switch to LED bulbs, unplug devices when not in use, and consider renewable energy sources.</p>
                             </div>
                             <div class="eco-tip flex-grow-1">
                                 <div class="d-flex align-items-center mb-2">
@@ -689,8 +689,7 @@
     </div>
     
     <!-- Initialize charts and features -->
-    <!-- Load seasons support before theme toggle -->
-    <script th:src="@{/js/seasons.js}"></script>
+    <!-- Seasons functionality removed -->
     <script th:src="@{/js/settings-panel.js}"></script>
     
     <script th:if="${result != null}">
