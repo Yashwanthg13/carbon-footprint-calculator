@@ -15,7 +15,7 @@ call mvnw.cmd package -DskipTests
 
 echo.
 echo Step 4: Starting application...
-echo The application will be available at http://localhost:8080
+echo The application will be available at http://localhost:8082
 echo Press Ctrl+C to stop the application
 
 title Carbon Footprint Calculator
