@@ -2,6 +2,8 @@
 
 A modern web application to calculate and track your carbon footprint with an intuitive interface and real-time visualization.
 
+*Last updated: May 27, 2025*
+
 ## Features
 
 - 🌱 Calculate your carbon footprint based on multiple factors
