@@ -128,6 +128,18 @@ function toggleTheme() {
 
         // Update charts if they exist
         updateChartsTheme();
+        
+        // Ensure metric values remain visible
+        updateMetricValuesVisibility();
+        
+        // Force text color based on theme
+        const isDarkTheme = body.classList.contains('dark-theme');
+        document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, label, .form-label, .metric-title, .help-text').forEach(el => {
+            el.style.color = isDarkTheme ? '#ffffff' : '#333333';
+            el.style.visibility = 'visible';
+            el.style.opacity = '1';
+            el.style.textShadow = isDarkTheme ? '0 0 2px rgba(255, 255, 255, 0.3)' : 'none';
+        });
     }, 500); // Much faster theme change
 
     // Remove leaves and cleanup after animation completes
@@ -152,30 +164,163 @@ function toggleTheme() {
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme');
     const themeToggle = document.querySelector('.theme-toggle');
-    const icon = themeToggle.querySelector('i');
+    
+    // Set default theme class if none exists
+    if (!document.body.classList.contains('dark-theme') && !document.body.classList.contains('light-theme')) {
+        document.body.classList.add(savedTheme === 'dark' ? 'dark-theme' : 'light-theme');
+    }
     
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-theme');
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
+        document.body.classList.remove('light-theme');
+        if (themeToggle) {
+            const icon = themeToggle.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+    } else {
+        document.body.classList.add('light-theme');
+        document.body.classList.remove('dark-theme');
     }
+    
+    // Force update of all metric values to ensure visibility
+    setTimeout(updateMetricValuesVisibility, 100); // Slight delay to ensure DOM is fully loaded
+    
+    // Initialize charts with correct theme
+    updateChartsTheme();
 });
+
+// Additional event listener specifically for ensuring metric values are visible after page load
+window.addEventListener('load', function() {
+    // Force metric values to be visible, especially important for dark theme
+    setTimeout(function() {
+        updateMetricValuesVisibility();
+        
+        // Apply direct styling to metric values to ensure visibility
+        const metricValues = document.querySelectorAll('.metric-value');
+        if (metricValues && metricValues.length > 0) {
+            const isDark = document.body.classList.contains('dark-theme');
+            metricValues.forEach(value => {
+                // Force inline styles with !important to override any CSS
+                value.setAttribute('style', 
+                    `color: ${isDark ? '#000000' : '#333'} !important; 
+                     visibility: visible !important; 
+                     opacity: 1 !important; 
+                     text-shadow: none !important;`);
+            });
+            console.log(`Forced visibility for ${metricValues.length} metric values on page load`);
+        }
+    }, 300); // Slightly longer delay to ensure everything is rendered
+});
+
+// Function to ensure metric values are visible in both themes
+function updateMetricValuesVisibility() {
+    const metricValues = document.querySelectorAll('.metric-value');
+    if (metricValues && metricValues.length > 0) {
+        const isDark = document.body.classList.contains('dark-theme');
+        metricValues.forEach(value => {
+            // Force inline styles to override any CSS that might be hiding the values
+            const isDark = document.body.classList.contains('dark-theme');
+            value.style.color = isDark ? '#ffffff' : '#333';
+            value.style.textShadow = isDark ? '0 0 2px rgba(255, 255, 255, 0.3)' : 'none';
+            value.style.visibility = 'visible';
+            value.style.opacity = '1';
+            value.style.padding = '2px 5px';
+            value.style.borderRadius = '4px';
+            value.style.border = isDark ? '1px solid #74c69d' : '1px solid #2d6a4f';
+            
+            // Add a data attribute to track that we've processed this element
+            value.setAttribute('data-theme-processed', 'true');
+        });
+        console.log(`Updated visibility for ${metricValues.length} metric values`);
+    }
+    
+    // Update all text elements based on theme
+    const isDarkTheme = document.body.classList.contains('dark-theme');
+    document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, label, .form-label, .metric-title, .help-text').forEach(el => {
+        el.style.color = isDarkTheme ? '#ffffff' : '#333333';
+        el.style.visibility = 'visible';
+        el.style.opacity = '1';
+        el.style.textShadow = isDarkTheme ? '0 0 2px rgba(255, 255, 255, 0.3)' : 'none';
+    });
+}
 
 // Update chart colors based on theme
 function updateChartsTheme() {
     if (typeof Chart !== 'undefined') {
         const isDark = document.body.classList.contains('dark-theme');
         
-        Chart.defaults.color = isDark ? '#e8f1f5' : '#333';
+        // Update global chart defaults
+        Chart.defaults.color = isDark ? '#000000' : '#333';
         Chart.defaults.plugins.tooltip.backgroundColor = isDark ? 
             'rgba(45, 106, 79, 0.95)' : 'rgba(0, 0, 0, 0.8)';
         
-        Chart.instances.forEach(chart => {
-            chart.options.scales.y.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-            chart.options.scales.x.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-            chart.options.scales.y.ticks.color = isDark ? '#e8f1f5' : '#333';
-            chart.options.scales.x.ticks.color = isDark ? '#e8f1f5' : '#333';
-            chart.update();
+        // Set theme-specific fonts
+        const darkThemeFont = "'Orbitron', 'Segoe UI', sans-serif";
+        const lightThemeFont = "'Poppins', 'Segoe UI', sans-serif";
+        const currentFont = isDark ? darkThemeFont : lightThemeFont;
+        
+        // Apply font to global defaults
+        Chart.defaults.font.family = currentFont;
+        
+        // Update all chart instances
+        if (Chart.instances && Chart.instances.length > 0) {
+            Chart.instances.forEach(chart => {
+                if (chart.options && chart.options.scales) {
+                    // Update Y axis if it exists
+                    if (chart.options.scales.y) {
+                        chart.options.scales.y.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                        chart.options.scales.y.ticks.color = isDark ? '#e8f1f5' : '#333';
+                        chart.options.scales.y.ticks.font = { family: currentFont };
+                    }
+                    
+                    // Update X axis if it exists
+                    if (chart.options.scales.x) {
+                        chart.options.scales.x.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                        chart.options.scales.x.ticks.color = isDark ? '#e8f1f5' : '#333';
+                        chart.options.scales.x.ticks.font = { family: currentFont };
+                    }
+                }
+                
+                // Update tooltip text color and font for better visibility
+                if (chart.options.plugins && chart.options.plugins.tooltip) {
+                    chart.options.plugins.tooltip.titleColor = isDark ? '#ffffff' : '#333';
+                    chart.options.plugins.tooltip.bodyColor = isDark ? '#ffffff' : '#333';
+                    chart.options.plugins.tooltip.borderColor = isDark ? 'rgba(57, 255, 20, 0.8)' : 'rgba(0, 0, 0, 0.2)';
+                    chart.options.plugins.tooltip.borderWidth = isDark ? 2 : 1;
+                    
+                    // Set tooltip fonts
+                    if (chart.options.plugins.tooltip.titleFont) {
+                        chart.options.plugins.tooltip.titleFont.family = currentFont;
+                    }
+                    if (chart.options.plugins.tooltip.bodyFont) {
+                        chart.options.plugins.tooltip.bodyFont.family = currentFont;
+                    }
+                }
+                
+                // Update legend font if it exists
+                if (chart.options.plugins && chart.options.plugins.legend && 
+                    chart.options.plugins.legend.labels && 
+                    chart.options.plugins.legend.labels.font) {
+                    chart.options.plugins.legend.labels.font.family = currentFont;
+                    chart.options.plugins.legend.labels.font.weight = isDark ? 'bold' : 'normal';
+                }
+                
+                // Apply changes
+                chart.update();
+            });
+        }
+    }
+    
+    // Ensure metric values are visible in both themes
+    const metricValues = document.querySelectorAll('.metric-value');
+    if (metricValues) {
+        const isDark = document.body.classList.contains('dark-theme');
+        metricValues.forEach(value => {
+            value.style.color = isDark ? '#e8f1f5' : '#333';
+            value.style.textShadow = isDark ? '0 0 5px rgba(57, 255, 20, 0.5)' : 'none';
         });
     }
 }

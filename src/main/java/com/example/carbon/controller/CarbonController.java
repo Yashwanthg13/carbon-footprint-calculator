@@ -2,15 +2,26 @@ package com.example.carbon.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.validation.Valid;
 
 import com.example.carbon.model.InputData;
 import com.example.carbon.model.CarbonFootprint;
+import com.example.carbon.model.CarbonGoal;
+
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 @Controller
 public class CarbonController {
+    
+    private static final Logger logger = Logger.getLogger(CarbonController.class.getName());
 
     @GetMapping("/")
     public String showCalculator(Model model) {
@@ -19,18 +30,35 @@ public class CarbonController {
     }
 
     @PostMapping("/calculate")
-    public String calculateFootprint(@ModelAttribute InputData inputData, Model model) {
-        // Calculate carbon footprint
-        CarbonFootprint result = calculateCarbonFootprint(inputData);
+    public String calculateFootprint(@Valid @ModelAttribute InputData inputData, BindingResult bindingResult, Model model) {
+        // Check for validation errors
+        if (bindingResult.hasErrors()) {
+            logger.log(Level.INFO, "Validation errors occurred: {0}", bindingResult.getAllErrors());
+            model.addAttribute("validationError", "Please correct the errors below");
+            return "index";
+        }
         
-        // Add results to model
-        model.addAttribute("result", result);
-        model.addAttribute("inputData", inputData);
-        
-        // Add eco tip based on highest emission source
-        model.addAttribute("ecoTip", getEcoTip(result));
-        
-        return "index";
+        try {
+            // Calculate carbon footprint
+            CarbonFootprint result = calculateCarbonFootprint(inputData);
+            
+            // Add results to model
+            model.addAttribute("result", result);
+            model.addAttribute("inputData", inputData);
+            
+            // Add eco tip based on highest emission source
+            model.addAttribute("ecoTip", getEcoTip(result));
+            
+            // Add a carbon goal suggestion based on the total emissions
+            model.addAttribute("carbonGoal", generateCarbonGoal(result));
+            
+            logger.log(Level.INFO, "Successfully calculated carbon footprint for user");
+            return "index";
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error calculating carbon footprint", e);
+            model.addAttribute("errorMessage", "An error occurred while calculating your carbon footprint. Please try again.");
+            return "index";
+        }
     }
 
     private CarbonFootprint calculateCarbonFootprint(InputData input) {
@@ -71,6 +99,35 @@ public class CarbonController {
         return result;
     }
 
+    /**
+     * Generates a personalized carbon reduction goal based on the user's footprint
+     */
+    private CarbonGoal generateCarbonGoal(CarbonFootprint result) {
+        double totalEmissions = result.getTotalEmissions();
+        CarbonGoal goal = new CarbonGoal();
+        
+        // Set reduction target based on current emissions
+        if (totalEmissions > 50) {
+            goal.setReductionTarget(20); // 20% reduction for high emitters
+        } else if (totalEmissions > 25) {
+            goal.setReductionTarget(15); // 15% reduction for medium emitters
+        } else {
+            goal.setReductionTarget(10); // 10% reduction for low emitters
+        }
+        
+        // Calculate target emissions
+        double targetEmissions = totalEmissions * (1 - (goal.getReductionTarget() / 100.0));
+        goal.setTargetEmissions(Math.round(targetEmissions * 10) / 10.0);
+        
+        // Set timeframe (in weeks)
+        goal.setTimeframe(12);
+        
+        return goal;
+    }
+    
+    /**
+     * Generates an eco tip based on the user's highest emission source
+     */
     private String getEcoTip(CarbonFootprint result) {
         double electricityEmissions = result.getElectricityEmissions();
         double travelEmissions = result.getTravelEmissions();

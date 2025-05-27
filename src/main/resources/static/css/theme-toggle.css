@@ -80,6 +80,30 @@ body.theme-changing {
     transition: all 1s ease;
 }
 
+/* Ensure metric values are always visible in both themes */
+.metric-value {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.dark-theme .metric-value {
+    color: #000000 !important; /* Black color for better visibility */
+    text-shadow: none !important; /* No text shadow for clearer reading */
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
+.light-theme .metric-value,
+body:not(.dark-theme) .metric-value {
+    color: #333 !important; /* Dark color for light theme */
+    text-shadow: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
 /* Enhance animation when in fullscreen mode */
 .fullscreen-leaf {
     z-index: 1002; /* Above everything */

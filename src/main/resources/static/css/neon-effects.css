@@ -1,0 +1,80 @@
+/* Neon Green and Black Theme Enhancement Effects */
+
+/* Neon glow effect for important elements */
+.dark-theme .section-header,
+.dark-theme .metric-title,
+.dark-theme .eco-tip .tip-title,
+.dark-theme .chart-title {
+    position: relative;
+    display: inline-block;
+}
+
+/* Pulsating glow animation for neon elements */
+@keyframes neonPulse {
+    0% { text-shadow: 0 0 5px rgba(57, 255, 20, 0.3); }
+    50% { text-shadow: 0 0 15px rgba(57, 255, 20, 0.6); }
+    100% { text-shadow: 0 0 5px rgba(57, 255, 20, 0.3); }
+}
+
+.dark-theme .section-header {
+    animation: neonPulse 3s infinite;
+}
+
+/* Enhanced readability for all text in dark mode */
+.dark-theme p,
+.dark-theme label,
+.dark-theme .form-text,
+.dark-theme .nav-link {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Glowing border effect for focused elements */
+.dark-theme .form-control:focus,
+.dark-theme .btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(57, 255, 20, 0.4);
+}
+
+/* Neon highlight for active navigation */
+.dark-theme .nav-link.active {
+    color: #39ff14 !important;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+}
+
+/* Improved contrast for links */
+.dark-theme a:not(.btn):not(.nav-link) {
+    color: #39ff14;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.dark-theme a:hover:not(.btn):not(.nav-link) {
+    color: #32d313;
+    text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+}
+
+/* Subtle glow for metric cards on hover */
+.dark-theme .metric-card:hover {
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+    border-color: rgba(57, 255, 20, 0.4);
+    transition: all 0.3s ease;
+}
+
+/* Enhanced scrollbar for dark theme */
+.dark-theme::-webkit-scrollbar {
+    width: 12px;
+}
+
+.dark-theme::-webkit-scrollbar-track {
+    background: #121212;
+}
+
+.dark-theme::-webkit-scrollbar-thumb {
+    background: #333333;
+    border-radius: 6px;
+}
+
+.dark-theme::-webkit-scrollbar-thumb:hover {
+    background: #39ff14;
+}

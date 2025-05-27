@@ -9,7 +9,8 @@ public class CarbonFootprint {
     private double perPersonEmissions;
 
     public double getElectricityEmissions() {
-        return electricityEmissions;
+        // Round to one decimal place to avoid floating point precision issues
+        return Math.round(electricityEmissions * 10) / 10.0;
     }
 
     public void setElectricityEmissions(double electricityEmissions) {
@@ -17,7 +18,8 @@ public class CarbonFootprint {
     }
 
     public double getTravelEmissions() {
-        return travelEmissions;
+        // Round to one decimal place to avoid floating point precision issues
+        return Math.round(travelEmissions * 10) / 10.0;
     }
 
     public void setTravelEmissions(double travelEmissions) {
@@ -25,7 +27,8 @@ public class CarbonFootprint {
     }
 
     public double getFoodEmissions() {
-        return foodEmissions;
+        // Round to one decimal place to avoid floating point precision issues
+        return Math.round(foodEmissions * 10) / 10.0;
     }
 
     public void setFoodEmissions(double foodEmissions) {
@@ -33,7 +36,8 @@ public class CarbonFootprint {
     }
 
     public double getWasteEmissions() {
-        return wasteEmissions;
+        // Round to one decimal place to avoid floating point precision issues
+        return Math.round(wasteEmissions * 10) / 10.0;
     }
 
     public void setWasteEmissions(double wasteEmissions) {
@@ -41,7 +45,8 @@ public class CarbonFootprint {
     }
 
     public double getTotalEmissions() {
-        return totalEmissions;
+        // Round to one decimal place to avoid floating point precision issues
+        return Math.round(totalEmissions * 10) / 10.0;
     }
 
     public void setTotalEmissions(double totalEmissions) {
@@ -49,7 +54,8 @@ public class CarbonFootprint {
     }
 
     public double getPerPersonEmissions() {
-        return perPersonEmissions;
+        // Round to one decimal place to avoid floating point precision issues
+        return Math.round(perPersonEmissions * 10) / 10.0;
     }
 
     public void setPerPersonEmissions(double perPersonEmissions) {

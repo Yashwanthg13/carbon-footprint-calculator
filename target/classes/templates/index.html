@@ -9,6 +9,132 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/themes.css}">
     <link rel="stylesheet" th:href="@{/css/theme-toggle.css}">
+    <link rel="stylesheet" th:href="@{/css/chart-theme.css}">
+    <!-- Google Fonts for theme-specific typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Dark theme visibility fix - high priority -->
+    <script th:src="@{/js/fix-dark-theme.js}"></script>
+    
+    <!-- Critical dark theme visibility fix for all text elements -->
+    <style>
+        /* Main background fix for dark theme */
+        body.dark-theme {
+            background: #121212 !important;
+            color: #ffffff !important;
+        }
+        
+        /* Fix for calculator container in dark theme */
+        body.dark-theme .calculator-container {
+            background-color: #1a1a1a !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+        }
+        
+        /* Fix for input section in dark theme */
+        body.dark-theme .input-section {
+            background-color: #262626 !important;
+            border: 1px solid #2d6a4f !important;
+        }
+        
+        /* Fix for metric values - ENHANCED */
+        body.dark-theme .metric-value {
+            color: #000000 !important;
+            text-shadow: none !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            font-weight: bold !important;
+            font-size: 1.6rem !important;
+        }
+        
+        /* Fix for section headers */
+        body.dark-theme .section-header {
+            color: #ffffff !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            font-weight: bold !important;
+        }
+        
+        /* Fix for section headers specifically in results section */
+        body.dark-theme .results-section .section-header {
+            color: #ffffff !important;
+            border-bottom: 2px solid #95d5b2 !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Fix for all text in dark theme */
+        body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, 
+        body.dark-theme h4, body.dark-theme h5, body.dark-theme h6,
+        body.dark-theme p, body.dark-theme span, body.dark-theme label,
+        body.dark-theme .form-label {
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Fix specifically for metric titles */
+        body.dark-theme .metric-title {
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            font-weight: bold !important;
+            font-size: 1.1rem !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Fix for chart titles and labels */
+        body.dark-theme .chart-container h4,
+        body.dark-theme .chart-container canvas {
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Fix for chart container in dark theme */
+        body.dark-theme .chart-container {
+            background-color: #262626 !important;
+            border: 1px solid #2d6a4f !important;
+        }
+        
+        /* Fix for results section background in dark theme */
+        body.dark-theme .results-section {
+            background-color: #ffffff !important;
+            border: 1px solid #2d6a4f !important;
+            color: #000000 !important;
+        }
+        
+        /* Fix for metric cards in dark theme */
+        body.dark-theme .metric-card {
+            background-color: #2d3a33 !important;
+            border: 1px solid #3a8c64 !important;
+            box-shadow: 0 0 10px rgba(58, 140, 100, 0.3) !important;
+        }
+        
+        /* Fix for icons in dark theme */
+        body.dark-theme .fas {
+            color: #ffffff !important;
+        }
+        
+        /* Fix for icons specifically in results section */
+        body.dark-theme .results-section .fas {
+            color: #ffffff !important;
+        }
+        
+        /* Fix for form controls in dark theme */
+        body.dark-theme .form-control {
+            background-color: #333333 !important;
+            border-color: #2d6a4f !important;
+            color: #ffffff !important;
+        }
+        
+        body.dark-theme .form-control:focus {
+            border-color: #8fffba !important;
+            box-shadow: 0 0 0 0.25rem rgba(116, 198, 157, 0.25) !important;
+        }
+    </style>
     <style>
         body {
             background: linear-gradient(135deg, #f0f7f4 0%, #e0f0ea 100%);
@@ -36,12 +162,12 @@
             background: linear-gradient(90deg, #2d6a4f, #40916c, #74c69d);
         }
         .eco-header {
-            color: #2d6a4f;
+            color: #000000;
             font-weight: bold;
             animation: fadeIn 1.5s;
         }
         .section-header {
-            color: #40916c;
+            color: #000000;
             margin: 1.5rem 0;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #95d5b2;
@@ -125,17 +251,23 @@
             transform: translateY(-3px);
         }
         .metric-title {
-            color: #2d6a4f;
+            color: #000000;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
         .metric-value {
-            color: #1b4332;
+            color: #000000;
             font-size: 1.5rem;
             font-weight: bold;
+            text-shadow: none;
+            background-color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            border: 1px solid #e0e0e0;
         }
         .help-text {
-            color: #74c69d;
+            color: #000000;
             font-size: 0.8rem;
             margin-top: 0.25rem;
         }
@@ -163,7 +295,7 @@
         .form-label {
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: #2d6a4f;
+            color: #000000;
         }
         .btn-success {
             background-color: #2d6a4f;
@@ -218,6 +350,20 @@
     <div class="container-fluid px-4">
         <div class="calculator-container">
             <div class="text-center mb-5">
+                <!-- Validation Error Alert -->
+                <div th:if="${validationError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <span th:text="${validationError}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
+                <!-- General Error Alert -->
+                <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span th:text="${errorMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
                 <h1 class="eco-header mb-3 animate__animated animate__fadeIn">
                     <i class="fas fa-seedling me-2"></i>
                     EcoCalc
@@ -242,8 +388,8 @@
                 </div>
             </div>
             
-            <div class="row" th:if="${result == null}">
-                <div class="col-md-6">
+            <div class="row gy-4" th:if="${result == null}">
+                <div class="col-lg-6 col-md-12">
                     <form action="#" th:action="@{/calculate}" th:object="${inputData}" method="post">
                         <div class="input-section animate__animated animate__fadeInLeft">
                             <h3 class="section-header">
@@ -316,7 +462,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-12"> <!-- Changed from col-md-6 to col-lg-6 col-md-12 for better mobile layout -->
                     <div class="results-section animate__animated animate__fadeInRight">
                         <h3 class="section-header">
                             <i class="fas fa-chart-line me-2"></i>
@@ -327,9 +473,9 @@
                 </div>
             </div>
 
-            <div class="row" th:if="${result != null}">
+            <div class="row gy-4" th:if="${result != null}"> <!-- Added gy-4 for better spacing on mobile -->
                 <!-- Side by side layout for input and analysis -->
-                <div class="col-md-6 mb-4">
+                <div class="col-lg-6 col-md-12 mb-4"> <!-- Changed from col-md-6 to col-lg-6 col-md-12 for better mobile layout -->
                     <form action="#" th:action="@{/calculate}" th:object="${inputData}" method="post">
                         <div class="input-section animate__animated animate__fadeInLeft">
                             <h3 class="section-header">
@@ -403,76 +549,76 @@
                     </form>
                 </div>
                 
-                <div class="col-md-6 mb-4">
+                <div class="col-lg-6 col-md-12 mb-4"> <!-- Changed from col-md-6 to col-lg-6 col-md-12 for better mobile layout -->
                     <div class="results-section animate__animated animate__fadeInRight">
                         <h3 class="section-header">
                             <i class="fas fa-chart-line me-2"></i>
                             Analysis
                         </h3>
                         
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="row gy-3"> <!-- Added gy-3 for better spacing on mobile -->
+                            <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-home me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-home me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Total Household Emissions</div>
-                                        <div class="metric-value" th:text="${result.totalEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.totalEmissions + ' kg CO₂'}">0</div>
                                         <div class="help-text">Monthly estimate</div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-user me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-user me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Per Person Emissions</div>
-                                        <div class="metric-value" th:text="${result.perPersonEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.perPersonEmissions + ' kg CO₂'}">0</div>
                                         <div class="help-text">Per person monthly</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="row mt-3">
-                            <div class="col-md-6">
+                        <div class="row mt-3 gy-3"> <!-- Added gy-3 for better spacing on mobile -->
+                            <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-bolt me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-bolt me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Electricity</div>
-                                        <div class="metric-value" th:text="${result.electricityEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.electricityEmissions + ' kg CO₂'}">0</div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-car-side me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-car-side me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Travel</div>
-                                        <div class="metric-value" th:text="${result.travelEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.travelEmissions + ' kg CO₂'}">0</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="row mt-3">
-                            <div class="col-md-6">
+                        <div class="row mt-3 gy-3"> <!-- Added gy-3 for better spacing on mobile -->
+                            <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-utensils me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-utensils me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Food</div>
-                                        <div class="metric-value" th:text="${result.foodEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.foodEmissions + ' kg CO₂'}">0</div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-trash-alt me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-trash-alt me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Waste</div>
-                                        <div class="metric-value" th:text="${result.wasteEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.wasteEmissions + ' kg CO₂'}">0</div>
                                     </div>
                                 </div>
                             </div>
@@ -480,63 +626,78 @@
                     </div>
                 </div>
                 
+                <!-- Carbon Goal Section Removed -->
+                
                 <!-- Charts Section -->
-                <div class="col-md-6 animate-on-scroll">
-                    <div class="chart-container h-100 d-flex flex-column">
-                        <h3 class="section-header mb-2">
-                            <i class="fas fa-chart-pie me-2"></i>
-                            Emissions Breakdown
-                        </h3>
-                        <canvas id="pieChart"></canvas>
+                <div class="col-12 mt-4 mb-4">
+                    <div class="row gy-4"> <!-- Added gy-4 for better spacing on mobile -->
+                        <!-- Charts in full width -->
+                        <div class="col-12"> 
+                            <div class="row gy-4"> <!-- Added gy-4 for better spacing on mobile -->
+                                <!-- Pie Chart -->
+                                <div class="col-md-6 col-sm-12 mb-md-4"> <!-- Added col-sm-12 for full width on small screens -->
+                                    <div class="chart-container animate-on-scroll">
+                                        <h4 class="text-center mb-3" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Emissions Breakdown</h4>
+                                        <canvas id="emissionsChart"></canvas> <!-- Removed fixed width/height for responsiveness -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Bar Chart -->
+                                <div class="col-md-6 col-sm-12 mb-md-4"> <!-- Added col-sm-12 for full width on small screens -->
+                                    <div class="chart-container animate-on-scroll">
+                                        <h4 class="text-center mb-3" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Emissions Comparison</h4>
+                                        <canvas id="comparisonChart"></canvas> <!-- Removed fixed width/height for responsiveness -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="col-md-6 animate-on-scroll">
-                    <div class="chart-container h-100 d-flex flex-column">
-                        <h3 class="section-header mb-2">
-                            <i class="fas fa-chart-bar me-2"></i>
-                            Emissions Comparison
-                        </h3>
-                        <canvas id="barChart"></canvas>
+                <!-- Eco-friendly Tips Section (Now after charts) -->
+                <div class="col-12 mt-4 mb-4">
+                    <div class="eco-tips-container">
+                        <div class="eco-tips-wrapper p-4 rounded-lg">
+                            <h3 class="section-header text-center mb-4" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">
+                                <i class="fas fa-leaf me-2" style="color: #000000 !important;"></i>
+                                Eco-Friendly Tips
+                            </h3>
+                            <div class="row gy-3">
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="eco-tip h-100">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="tip-icon">🔌</div>
+                                            <h5 class="tip-title mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Reduce Electricity</h5>
+                                        </div>
+                                        <p class="mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Switch to LED bulbs and energy-efficient appliances. Use a programmable thermostat to optimize heating and cooling.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="eco-tip h-100">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="tip-icon">🚲</div>
+                                            <h5 class="tip-title mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Green Transport</h5>
+                                        </div>
+                                        <p class="mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Use public transport, bike, or walk. Consider an electric vehicle for your next purchase.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="eco-tip h-100">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="tip-icon">♻️</div>
+                                            <h5 class="tip-title mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Reduce & Recycle</h5>
+                                        </div>
+                                        <p class="mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Choose products with less packaging, recycle properly, and consider composting to reduce waste.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Carbon Reduction Goal Tracker -->
                 
-                
-
-                <!-- Eco-friendly Tips Section -->
-                <div class="col-12 eco-tips-container mt-5 mb-4">
-                    <div class="eco-tips-wrapper p-4 rounded-lg">
-                        <h3 class="section-header text-center mb-4">
-                            <i class="fas fa-leaf me-2"></i>
-                            Eco-Friendly Tips
-                        </h3>
-                        <div class="d-flex justify-content-between flex-wrap gap-3">
-                            <div class="eco-tip flex-grow-1">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="tip-icon">🔌</div>
-                                    <h5 class="tip-title mb-0">Reduce Electricity</h5>
-                                </div>
-                                <p class="mb-0">Switch to LED bulbs and energy-efficient appliances. Use a programmable thermostat to optimize heating and cooling.</p>
-                            </div>
-                            <div class="eco-tip flex-grow-1">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="tip-icon">🚲</div>
-                                    <h5 class="tip-title mb-0">Green Transport</h5>
-                                </div>
-                                <p class="mb-0">Use public transport, bike, or walk. Consider an electric vehicle for your next purchase.</p>
-                            </div>
-                            <div class="eco-tip flex-grow-1">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="tip-icon">♻️</div>
-                                    <h5 class="tip-title mb-0">Reduce & Recycle</h5>
-                                </div>
-                                <p class="mb-0">Choose products with less packaging, recycle properly, and consider composting to reduce waste.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Removed hidden inputs for chart data -->
                 
             </div>
         </div>
@@ -545,28 +706,7 @@
     <!-- Initialize charts and features -->
     <script th:if="${result != null}">
 
-        function updateTreeSize() {
-            const totalEmissions = emissionsData.electricity + emissionsData.travel + 
-                                 emissionsData.food + emissionsData.waste;
-            
-            // Scale tree size based on emissions (between 80% and 120%)
-            const scale = 0.8 + Math.min(totalEmissions / 1000, 0.4);
-            const crown = document.querySelector('.tree-crown');
-            crown.style.transform = `scale(${scale})`;
-            
-            // Adjust tree color based on emissions
-            const hue = Math.max(120 - (totalEmissions / 50), 60); // From green (120) to yellow (60)
-            document.querySelectorAll('.leaf').forEach(leaf => {
-                leaf.style.backgroundColor = `hsl(${hue}, 70%, 70%)`;
-            });
-        }
-
-        function addTreeGlow() {
-            const treeContainer = document.querySelector('.tree-container');
-            const glowElement = document.createElement('div');
-            glowElement.className = 'tree-glow';
-            treeContainer.appendChild(glowElement);
-        }
+        // Tree-related functions have been removed
 
         // Add tooltips to eco-icons
         function addTooltips() {
@@ -969,6 +1109,60 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.02); }
         }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0;
+            }
+            
+            .calculator-container {
+                padding: 1.25rem;
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .eco-header {
+                font-size: 1.8rem;
+            }
+            
+            .chart-container {
+                min-height: 300px;
+                max-height: 300px;
+                padding: 1rem;
+            }
+            
+            .metric-card {
+                padding: 0.75rem;
+            }
+            
+            .metric-value {
+                font-size: 1.25rem;
+            }
+            
+            .eco-tip {
+                padding: 1.5rem;
+                margin: 0.75rem 0;
+            }
+            
+            /* Improve form spacing on mobile */
+            .form-control {
+                height: 40px;
+                padding: 0.5rem 0.75rem;
+            }
+            
+            /* Adjust feature list on mobile */
+            .mt-3.animate__animated.animate__fadeIn.animate__delay-2s {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .mt-3.animate__animated.animate__fadeIn.animate__delay-2s span.mx-4 {
+                margin: 0.5rem 0 !important;
+            }
+        }
     </style>
     
     <!-- Hidden inputs for chart data -->
@@ -977,281 +1171,216 @@
         <input type="hidden" id="travelEmissions" th:value="${result.travelEmissions}">
         <input type="hidden" id="foodEmissions" th:value="${result.foodEmissions}">
         <input type="hidden" id="wasteEmissions" th:value="${result.wasteEmissions}">
+        <input type="hidden" id="totalEmissions" th:value="${result.totalEmissions}">
+        <input type="hidden" id="perPersonEmissions" th:value="${result.perPersonEmissions}">
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.1.0/chartjs-plugin-annotation.min.js"></script>
+    <!-- Theme toggle script -->    
     <script th:src="@{/js/theme-toggle.js}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     
     <script th:if="${result != null}">
-        Chart.defaults.animation = {
-            duration: 2000,
-            easing: 'easeInOutQuart',
-            delay: (context) => {
-                let delay = 0;
-                if (context.type === 'data') {
-                    delay = context.dataIndex * 100;
-                }
-                return delay;
-            }
-        };
-        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(45, 106, 79, 0.9)';
-        Chart.defaults.plugins.tooltip.padding = 10;
-        Chart.defaults.plugins.tooltip.titleFont = {
-            size: 14,
-            weight: 'bold'
-        };
-        Chart.defaults.plugins.legend.labels.padding = 15;
-        // Data for charts
-        const emissionsData = {
-            electricity: parseFloat(document.getElementById('electricityEmissions').value),
-            travel: parseFloat(document.getElementById('travelEmissions').value),
-            food: parseFloat(document.getElementById('foodEmissions').value),
-            waste: parseFloat(document.getElementById('wasteEmissions').value)
-        };
-        
-        // Pie Chart
-        const pieCtx = document.getElementById('pieChart').getContext('2d');
-        const pieChart = new Chart(pieCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Electricity', 'Travel', 'Food', 'Waste'],
-                datasets: [{
-                    data: [
-                        emissionsData.electricity,
-                        emissionsData.travel,
-                        emissionsData.food,
-                        emissionsData.waste
-                    ],
-                    backgroundColor: [
-                        '#FF6B6B',  // bright red for electricity
-                        '#4ECDC4',  // turquoise for travel
-                        '#45B7D1',  // blue for food
-                        '#96CEB4'   // sage green for waste
-                    ],
-                    borderWidth: 2,
-                    hoverBorderWidth: 4,
-                    hoverOffset: 15,
-                    borderColor: '#ffffff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.raw || 0;
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = Math.round((value / total) * 100);
-                                return `${label}: ${value} kg CO₂ (${percentage}%)`;
-                            }
-                        }
-                    }
-                },
-                animation: {
-                    animateScale: true,
-                    animateRotate: true,
-                    duration: 2000,
-                    easing: 'easeInOutQuart',
-                    onProgress: function(animation) {
-                        const ease = Chart.helpers.easingEffects.easeInOutQuart;
-                        const progress = ease(animation.currentStep / animation.numSteps);
-                        const chart = animation.chart;
-                        
-                        chart.data.datasets.forEach((dataset, i) => {
-                            if (chart.getDatasetMeta(i).hidden) return;
-                            chart.getDatasetMeta(i).data.forEach((element, index) => {
-                                element.options.rotation = Math.PI * 2 * progress;
-                                element.options.circumference = Math.PI * 2 * progress;
-                            });
-                        });
-                        
-                        chart.update('none');
-                    },
-                    onComplete: function(animation) {
-                        animation.chart.update();
-                    }
-                },
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                    axis: 'xy'
-                },
-                plugins: {
-                    tooltip: {
-                        backgroundColor: 'rgba(45, 106, 79, 0.95)',
-                        titleColor: '#ffffff',
-                        bodyColor: '#ffffff',
-                        borderColor: '#ffffff',
-                        borderWidth: 1,
-                        padding: 12,
-                        displayColors: true,
-                        boxWidth: 10,
-                        boxHeight: 10,
-                        boxPadding: 3,
-                        usePointStyle: true,
-                        callbacks: {
-                            title: function(tooltipItems) {
-                                return tooltipItems[0].label;
-                            },
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.raw || 0;
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = Math.round((value / total) * 100);
-                                return ` ${value} kg CO₂ (${percentage}%)`;
-                            }
-                        }
-                    }
-                },
-                hover: {
-                    animationDuration: 300
-                },
-                transitions: {
-                    active: {
-                        animation: {
-                    duration: 400,
-                    easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-                        }
-                    }
-                }
-            }
-        });
-        
-        // Bar Chart
-        const barCtx = document.getElementById('barChart').getContext('2d');
-        const barChart = new Chart(barCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Electricity', 'Travel', 'Food', 'Waste'],
-                datasets: [{
-                    label: 'Emissions (kg CO₂)',
-                    data: [
-                        emissionsData.electricity,
-                        emissionsData.travel,
-                        emissionsData.food,
-                        emissionsData.waste
-                    ],
-                    backgroundColor: [
-                        '#FF6B6B',  // bright red for electricity
-                        '#4ECDC4',  // turquoise for travel
-                        '#45B7D1',  // blue for food
-                        '#96CEB4'   // sage green for waste
-                    ],
-                    borderWidth: 2,
-                    borderColor: 'rgba(255,255,255,0.8)',
-                    hoverBorderWidth: 3,
-                    hoverBorderColor: '#ffffff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'kg CO₂'
-                        }
-                    }
-                },
-                animation: {
-                    delay: function(context) {
-                        return context.dataIndex * 300;
-                    },
-                    duration: 1500,
-                    easing: 'easeOutBounce',
-                    from: (ctx) => {
-                        return {
-                            y: ctx.chart.scales.y.getPixelForValue(0)
-                        };
-                    },
-                    onComplete: function(animation) {
-                        let delayed = false;
-                        if (!delayed) {
-                            delayed = true;
-                            setTimeout(() => {
-                                animation.chart.update('show');
-                            }, 500);
-                        }
-                    }
-                },
-                transitions: {
-                    active: {
-                        animation: {
-                            duration: 400,
-                            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-                        }
-                    },
-                    show: {
-                        animations: {
-                            x: {
-                                from: 0
-                            },
-                            y: {
-                                from: 0
-                            }
-                        }
-                    }
-                },
-                hover: {
-                    mode: 'index',
-                    intersect: false,
-                    animationDuration: 200
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20
-                        }
-                    }
-                }
-            }
-        });
-        
-        // Animation on scroll
-        const animateOnScroll = function() {
-            const elements = document.querySelectorAll('.animate-on-scroll');
+        // Execute when page is loaded
+        window.onload = function() {
+            // Get chart data from hidden inputs
+            const electricityEmissions = parseFloat(document.getElementById('electricityEmissions').value);
+            const travelEmissions = parseFloat(document.getElementById('travelEmissions').value);
+            const foodEmissions = parseFloat(document.getElementById('foodEmissions').value);
+            const wasteEmissions = parseFloat(document.getElementById('wasteEmissions').value);
+            const totalEmissions = parseFloat(document.getElementById('totalEmissions').value);
+            const perPersonEmissions = parseFloat(document.getElementById('perPersonEmissions').value);
             
-            elements.forEach(element => {
-                const elementPosition = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementPosition < windowHeight - 50) {
-                    element.classList.add('visible');
+            // Set up colors with transparency for charts
+            const chartColors = {
+                electricity: 'rgba(255, 99, 132, 0.8)',   // Red
+                travel: 'rgba(54, 162, 235, 0.8)',        // Blue
+                food: 'rgba(255, 206, 86, 0.8)',          // Yellow
+                waste: 'rgba(75, 192, 192, 0.8)',         // Green
+                border: {
+                    electricity: 'rgba(255, 99, 132, 1)',
+                    travel: 'rgba(54, 162, 235, 1)',
+                    food: 'rgba(255, 206, 86, 1)',
+                    waste: 'rgba(75, 192, 192, 1)'
+                }
+            };
+            
+            // Create pie chart for emissions breakdown
+            const pieCtx = document.getElementById('emissionsChart').getContext('2d');
+            const pieChart = new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Electricity', 'Travel', 'Food', 'Waste'],
+                    datasets: [{
+                        data: [electricityEmissions, travelEmissions, foodEmissions, wasteEmissions],
+                        backgroundColor: [
+                            chartColors.electricity,
+                            chartColors.travel,
+                            chartColors.food,
+                            chartColors.waste
+                        ],
+                        borderColor: [
+                            chartColors.border.electricity,
+                            chartColors.border.travel,
+                            chartColors.border.food,
+                            chartColors.border.waste
+                        ],
+                        borderWidth: 1,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    // Mobile-specific adjustments
+                    onResize: function(chart, size) {
+                        if (window.innerWidth < 768) {
+                            chart.options.plugins.legend.labels.font.size = 10;
+                            chart.options.plugins.legend.labels.padding = 10;
+                        } else {
+                            chart.options.plugins.legend.labels.font.size = 12;
+                            chart.options.plugins.legend.labels.padding = 20;
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                    size: 12
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const percentage = Math.round((value / totalEmissions) * 100);
+                                    return `${label}: ${value.toFixed(2)} kg CO₂ (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
                 }
             });
-        };
-        
-        window.addEventListener('scroll', animateOnScroll);
-        window.addEventListener('load', () => {
-            animateOnScroll();
-
-            // Animate goal progress bar
-            setTimeout(() => {
-                const progressBar = document.querySelector('.goal-progress-bar .progress-bar');
-                if (progressBar) {
-                    const currentEmissions = parseFloat(document.querySelector('.current-emissions span').textContent);
-                    const goalEmissions = parseFloat(document.querySelector('.goal-emissions span').textContent);
-                    const progress = Math.min(100, ((currentEmissions - goalEmissions) / currentEmissions) * 100);
-                    progressBar.style.width = progress + '%';
-                    progressBar.setAttribute('aria-valuenow', progress);
+            
+            // Create bar chart for emissions comparison
+            const barCtx = document.getElementById('comparisonChart').getContext('2d');
+            const barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Electricity', 'Travel', 'Food', 'Waste'],
+                    datasets: [{
+                        label: 'Emissions (kg CO₂)',
+                        data: [electricityEmissions, travelEmissions, foodEmissions, wasteEmissions],
+                        backgroundColor: [
+                            chartColors.electricity,
+                            chartColors.travel,
+                            chartColors.food,
+                            chartColors.waste
+                        ],
+                        borderColor: [
+                            chartColors.border.electricity,
+                            chartColors.border.travel,
+                            chartColors.border.food,
+                            chartColors.border.waste
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        maxBarThickness: 50
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    // Mobile-specific adjustments
+                    onResize: function(chart, size) {
+                        if (window.innerWidth < 768) {
+                            chart.options.scales.y.ticks.font.size = 10;
+                            chart.options.scales.x.ticks.font.size = 10;
+                            chart.data.datasets[0].maxBarThickness = 30;
+                        } else {
+                            chart.options.scales.y.ticks.font.size = 12;
+                            chart.options.scales.x.ticks.font.size = 12;
+                            chart.data.datasets[0].maxBarThickness = 50;
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)'
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw || 0;
+                                    const percentage = Math.round((value / totalEmissions) * 100);
+                                    return `${value.toFixed(2)} kg CO₂ (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        delay: function(context) {
+                            return context.dataIndex * 100;
+                        },
+                        duration: 1000,
+                        easing: 'easeOutQuart'
+                    }
                 }
-            }, 500);
-        });
+            });
+            
+            // Radar chart removed as requested
+            
+            // Animation for charts on scroll
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.animate-on-scroll');
+                
+                elements.forEach(element => {
+                    const position = element.getBoundingClientRect();
+                    
+                    // Check if element is in viewport
+                    if(position.top < window.innerHeight && position.bottom >= 0) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            // Run animation check on load
+            animateOnScroll();
+            
+            // Run animation check on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        };
     </script>
 </body>
 </html>
-        }

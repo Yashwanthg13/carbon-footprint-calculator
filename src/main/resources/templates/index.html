@@ -9,8 +9,132 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/themes.css}">
     <link rel="stylesheet" th:href="@{/css/theme-toggle.css}">
+    <link rel="stylesheet" th:href="@{/css/chart-theme.css}">
+    <!-- Google Fonts for theme-specific typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Dark theme visibility fix - high priority -->
+    <script th:src="@{/js/fix-dark-theme.js}"></script>
+    
+    <!-- Critical dark theme visibility fix for all text elements -->
+    <style>
+        /* Main background fix for dark theme */
+        body.dark-theme {
+            background: #121212 !important;
+            color: #ffffff !important;
+        }
+        
+        /* Fix for calculator container in dark theme */
+        body.dark-theme .calculator-container {
+            background-color: #1a1a1a !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+        }
+        
+        /* Fix for input section in dark theme */
+        body.dark-theme .input-section {
+            background-color: #262626 !important;
+            border: 1px solid #2d6a4f !important;
+        }
+        
+        /* Fix for metric values - ENHANCED */
+        body.dark-theme .metric-value {
+            color: #000000 !important;
+            text-shadow: none !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            font-weight: bold !important;
+            font-size: 1.6rem !important;
+        }
+        
+        /* Fix for section headers */
+        body.dark-theme .section-header {
+            color: #ffffff !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            font-weight: bold !important;
+        }
+        
+        /* Fix for section headers specifically in results section */
+        body.dark-theme .results-section .section-header {
+            color: #ffffff !important;
+            border-bottom: 2px solid #95d5b2 !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Fix for all text in dark theme */
+        body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, 
+        body.dark-theme h4, body.dark-theme h5, body.dark-theme h6,
+        body.dark-theme p, body.dark-theme span, body.dark-theme label,
+        body.dark-theme .form-label {
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Fix specifically for metric titles */
+        body.dark-theme .metric-title {
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            font-weight: bold !important;
+            font-size: 1.1rem !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Fix for chart titles and labels */
+        body.dark-theme .chart-container h4,
+        body.dark-theme .chart-container canvas {
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Fix for chart container in dark theme */
+        body.dark-theme .chart-container {
+            background-color: #262626 !important;
+            border: 1px solid #2d6a4f !important;
+        }
+        
+        /* Fix for results section background in dark theme */
+        body.dark-theme .results-section {
+            background-color: #ffffff !important;
+            border: 1px solid #2d6a4f !important;
+            color: #000000 !important;
+        }
+        
+        /* Fix for metric cards in dark theme */
+        body.dark-theme .metric-card {
+            background-color: #2d3a33 !important;
+            border: 1px solid #3a8c64 !important;
+            box-shadow: 0 0 10px rgba(58, 140, 100, 0.3) !important;
+        }
+        
+        /* Fix for icons in dark theme */
+        body.dark-theme .fas {
+            color: #ffffff !important;
+        }
+        
+        /* Fix for icons specifically in results section */
+        body.dark-theme .results-section .fas {
+            color: #ffffff !important;
+        }
+        
+        /* Fix for form controls in dark theme */
+        body.dark-theme .form-control {
+            background-color: #333333 !important;
+            border-color: #2d6a4f !important;
+            color: #ffffff !important;
+        }
+        
+        body.dark-theme .form-control:focus {
+            border-color: #8fffba !important;
+            box-shadow: 0 0 0 0.25rem rgba(116, 198, 157, 0.25) !important;
+        }
+    </style>
     <style>
         body {
             background: linear-gradient(135deg, #f0f7f4 0%, #e0f0ea 100%);
@@ -38,12 +162,12 @@
             background: linear-gradient(90deg, #2d6a4f, #40916c, #74c69d);
         }
         .eco-header {
-            color: #2d6a4f;
+            color: #000000;
             font-weight: bold;
             animation: fadeIn 1.5s;
         }
         .section-header {
-            color: #40916c;
+            color: #000000;
             margin: 1.5rem 0;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #95d5b2;
@@ -127,17 +251,23 @@
             transform: translateY(-3px);
         }
         .metric-title {
-            color: #2d6a4f;
+            color: #000000;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
         .metric-value {
-            color: #1b4332;
+            color: #000000;
             font-size: 1.5rem;
             font-weight: bold;
+            text-shadow: none;
+            background-color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            border: 1px solid #e0e0e0;
         }
         .help-text {
-            color: #74c69d;
+            color: #000000;
             font-size: 0.8rem;
             margin-top: 0.25rem;
         }
@@ -165,7 +295,7 @@
         .form-label {
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: #2d6a4f;
+            color: #000000;
         }
         .btn-success {
             background-color: #2d6a4f;
@@ -220,6 +350,20 @@
     <div class="container-fluid px-4">
         <div class="calculator-container">
             <div class="text-center mb-5">
+                <!-- Validation Error Alert -->
+                <div th:if="${validationError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <span th:text="${validationError}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
+                <!-- General Error Alert -->
+                <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span th:text="${errorMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
                 <h1 class="eco-header mb-3 animate__animated animate__fadeIn">
                     <i class="fas fa-seedling me-2"></i>
                     EcoCalc
@@ -415,10 +559,10 @@
                         <div class="row gy-3"> <!-- Added gy-3 for better spacing on mobile -->
                             <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-home me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-home me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Total Household Emissions</div>
-                                        <div class="metric-value" th:text="${result.totalEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.totalEmissions + ' kg CO₂'}">0</div>
                                         <div class="help-text">Monthly estimate</div>
                                     </div>
                                 </div>
@@ -426,10 +570,10 @@
                             
                             <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-user me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-user me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Per Person Emissions</div>
-                                        <div class="metric-value" th:text="${result.perPersonEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.perPersonEmissions + ' kg CO₂'}">0</div>
                                         <div class="help-text">Per person monthly</div>
                                     </div>
                                 </div>
@@ -439,20 +583,20 @@
                         <div class="row mt-3 gy-3"> <!-- Added gy-3 for better spacing on mobile -->
                             <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-bolt me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-bolt me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Electricity</div>
-                                        <div class="metric-value" th:text="${result.electricityEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.electricityEmissions + ' kg CO₂'}">0</div>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-car-side me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-car-side me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Travel</div>
-                                        <div class="metric-value" th:text="${result.travelEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.travelEmissions + ' kg CO₂'}">0</div>
                                     </div>
                                 </div>
                             </div>
@@ -461,26 +605,28 @@
                         <div class="row mt-3 gy-3"> <!-- Added gy-3 for better spacing on mobile -->
                             <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-utensils me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-utensils me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Food</div>
-                                        <div class="metric-value" th:text="${result.foodEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.foodEmissions + ' kg CO₂'}">0</div>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="col-md-6 col-sm-12"> <!-- Added col-sm-12 for full width on small screens -->
                                 <div class="metric-card d-flex align-items-center">
-                                    <i class="fas fa-trash-alt me-3" style="font-size: 2rem; color: #2d6a4f;"></i>
+                                    <i class="fas fa-trash-alt me-3" style="font-size: 2rem; color: #000000;"></i>
                                     <div>
                                         <div class="metric-title">Waste</div>
-                                        <div class="metric-value" th:text="${result.wasteEmissions + ' kg CO₂'}">0</div>
+                                        <div class="metric-value" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;" th:text="${result.wasteEmissions + ' kg CO₂'}">0</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Carbon Goal Section Removed -->
                 
                 <!-- Charts Section -->
                 <div class="col-12 mt-4 mb-4">
@@ -491,7 +637,7 @@
                                 <!-- Pie Chart -->
                                 <div class="col-md-6 col-sm-12 mb-md-4"> <!-- Added col-sm-12 for full width on small screens -->
                                     <div class="chart-container animate-on-scroll">
-                                        <h4 class="text-center mb-3">Emissions Breakdown</h4>
+                                        <h4 class="text-center mb-3" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Emissions Breakdown</h4>
                                         <canvas id="emissionsChart"></canvas> <!-- Removed fixed width/height for responsiveness -->
                                     </div>
                                 </div>
@@ -499,7 +645,7 @@
                                 <!-- Bar Chart -->
                                 <div class="col-md-6 col-sm-12 mb-md-4"> <!-- Added col-sm-12 for full width on small screens -->
                                     <div class="chart-container animate-on-scroll">
-                                        <h4 class="text-center mb-3">Emissions Comparison</h4>
+                                        <h4 class="text-center mb-3" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Emissions Comparison</h4>
                                         <canvas id="comparisonChart"></canvas> <!-- Removed fixed width/height for responsiveness -->
                                     </div>
                                 </div>
@@ -512,8 +658,8 @@
                 <div class="col-12 mt-4 mb-4">
                     <div class="eco-tips-container">
                         <div class="eco-tips-wrapper p-4 rounded-lg">
-                            <h3 class="section-header text-center mb-4">
-                                <i class="fas fa-leaf me-2"></i>
+                            <h3 class="section-header text-center mb-4" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">
+                                <i class="fas fa-leaf me-2" style="color: #000000 !important;"></i>
                                 Eco-Friendly Tips
                             </h3>
                             <div class="row gy-3">
@@ -521,27 +667,27 @@
                                     <div class="eco-tip h-100">
                                         <div class="d-flex align-items-center mb-2">
                                             <div class="tip-icon">🔌</div>
-                                            <h5 class="tip-title mb-0">Reduce Electricity</h5>
+                                            <h5 class="tip-title mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Reduce Electricity</h5>
                                         </div>
-                                        <p class="mb-0">Switch to LED bulbs and energy-efficient appliances. Use a programmable thermostat to optimize heating and cooling.</p>
+                                        <p class="mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Switch to LED bulbs and energy-efficient appliances. Use a programmable thermostat to optimize heating and cooling.</p>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-12">
                                     <div class="eco-tip h-100">
                                         <div class="d-flex align-items-center mb-2">
                                             <div class="tip-icon">🚲</div>
-                                            <h5 class="tip-title mb-0">Green Transport</h5>
+                                            <h5 class="tip-title mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Green Transport</h5>
                                         </div>
-                                        <p class="mb-0">Use public transport, bike, or walk. Consider an electric vehicle for your next purchase.</p>
+                                        <p class="mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Use public transport, bike, or walk. Consider an electric vehicle for your next purchase.</p>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-12">
                                     <div class="eco-tip h-100">
                                         <div class="d-flex align-items-center mb-2">
                                             <div class="tip-icon">♻️</div>
-                                            <h5 class="tip-title mb-0">Reduce & Recycle</h5>
+                                            <h5 class="tip-title mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Reduce & Recycle</h5>
                                         </div>
-                                        <p class="mb-0">Choose products with less packaging, recycle properly, and consider composting to reduce waste.</p>
+                                        <p class="mb-0" style="color: #000000 !important; visibility: visible !important; opacity: 1 !important;">Choose products with less packaging, recycle properly, and consider composting to reduce waste.</p>
                                     </div>
                                 </div>
                             </div>
@@ -560,28 +706,7 @@
     <!-- Initialize charts and features -->
     <script th:if="${result != null}">
 
-        function updateTreeSize() {
-            const totalEmissions = emissionsData.electricity + emissionsData.travel + 
-                                 emissionsData.food + emissionsData.waste;
-            
-            // Scale tree size based on emissions (between 80% and 120%)
-            const scale = 0.8 + Math.min(totalEmissions / 1000, 0.4);
-            const crown = document.querySelector('.tree-crown');
-            crown.style.transform = `scale(${scale})`;
-            
-            // Adjust tree color based on emissions
-            const hue = Math.max(120 - (totalEmissions / 50), 60); // From green (120) to yellow (60)
-            document.querySelectorAll('.leaf').forEach(leaf => {
-                leaf.style.backgroundColor = `hsl(${hue}, 70%, 70%)`;
-            });
-        }
-
-        function addTreeGlow() {
-            const treeContainer = document.querySelector('.tree-container');
-            const glowElement = document.createElement('div');
-            glowElement.className = 'tree-glow';
-            treeContainer.appendChild(glowElement);
-        }
+        // Tree-related functions have been removed
 
         // Add tooltips to eco-icons
         function addTooltips() {

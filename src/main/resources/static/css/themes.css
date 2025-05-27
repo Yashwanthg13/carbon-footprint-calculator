@@ -2,7 +2,7 @@
     --background-gradient-light: linear-gradient(135deg, #f0f7f4 0%, #e0f0ea 100%);
     --background-gradient-dark: linear-gradient(135deg, #1e3a50 0%, #2a4858 100%);
     --text-color-light: #333;
-    --text-color-dark: #e8f1f5;
+    --text-color-dark: #ffffff;
     --card-bg-light: white;
     --card-bg-dark: rgba(255, 255, 255, 0.1);
     --accent-color-light: #2d6a4f;
@@ -25,11 +25,15 @@ body.dark-theme {
 }
 
 body.dark-theme .form-label {
-    color: #9fd3c7;
+    color: #000000;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 body.dark-theme .help-text {
-    color: #95d5b2;
+    color: #000000;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 body.dark-theme .eco-tip {
@@ -38,24 +42,44 @@ body.dark-theme .eco-tip {
 }
 
 body.dark-theme .eco-tip .tip-title {
-    color: #74c69d;
+    color: #000000;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 body.dark-theme .eco-tip p {
-    color: #e8f1f5;
+    color: #000000;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 body.dark-theme .section-header {
-    color: #74c69d;
-    border-bottom-color: rgba(116, 198, 157, 0.3);
+    color: #000000;
+    border-bottom-color: rgba(0, 0, 0, 0.3);
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure metric values are always visible in dark theme */
+body.dark-theme .metric-value {
+    color: #000000 !important;
+    text-shadow: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+    font-weight: bold !important;
 }
 
 body.dark-theme .metric-title {
-    color: #74c69d;
+    color: #000000;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 body.dark-theme .metric-value {
-    color: #e8f1f5;
+    color: #000000;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .theme-toggle {

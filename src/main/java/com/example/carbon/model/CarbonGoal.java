@@ -8,6 +8,8 @@ public class CarbonGoal {
     private String category; // e.g., "electricity", "transport", "overall"
     private double startingEmissions;
     private LocalDate startDate;
+    private double reductionTarget; // percentage reduction
+    private int timeframe; // in weeks
     
     public double getTargetEmissions() {
         return targetEmissions;
@@ -60,5 +62,21 @@ public class CarbonGoal {
     
     public long getDaysRemaining() {
         return LocalDate.now().until(targetDate).getDays();
+    }
+    
+    public double getReductionTarget() {
+        return reductionTarget;
+    }
+    
+    public void setReductionTarget(double reductionTarget) {
+        this.reductionTarget = reductionTarget;
+    }
+    
+    public int getTimeframe() {
+        return timeframe;
+    }
+    
+    public void setTimeframe(int timeframe) {
+        this.timeframe = timeframe;
     }
 }

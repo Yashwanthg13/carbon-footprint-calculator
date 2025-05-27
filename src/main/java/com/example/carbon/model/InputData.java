@@ -1,12 +1,29 @@
 package com.example.carbon.model;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 public class InputData {
+    @NotNull
+    @Min(value = 1, message = "Household size must be at least 1")
     private int householdSize;
+    @NotNull
+    @Min(value = 0, message = "Electricity usage cannot be negative")
     private double electricityUsage;
+    @NotNull
+    @Min(value = 0, message = "Car distance cannot be negative")
     private double carDistance;
+    @NotNull
+    @Min(value = 0, message = "Bus distance cannot be negative")
     private double busDistance;
+    @NotNull
+    @Min(value = 0, message = "Train distance cannot be negative")
     private double trainDistance;
+    @NotNull
+    @Min(value = 0, message = "Meat consumption cannot be negative")
     private double meatConsumption;
+    @NotNull
+    @Min(value = 0, message = "Waste generation cannot be negative")
     private double wasteGeneration;
 
     public int getHouseholdSize() {

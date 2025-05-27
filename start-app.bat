@@ -12,8 +12,8 @@ if %ERRORLEVEL% NEQ 0 (
 
 echo.
 echo Starting application...
-echo The application will be available at http://localhost:8080
+echo The application will be available at http://localhost:9090
 echo Press Ctrl+C to stop the application
 
-java -jar carbon-footprint-calculator.jar
+java -Dserver.port=9090 -jar target\carbon-0.0.1-SNAPSHOT.jar
 pause
