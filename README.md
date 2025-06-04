@@ -14,7 +14,7 @@ A modern web application to calculate and track your carbon footprint with an in
 
 ## Live Demo
 
-[Access the live application](https://carbon-footprint-calculator.onrender.com)
+[Access the live application](https://ecocalc.yashwanthg.com)
 
 ## Tech Stack
 
