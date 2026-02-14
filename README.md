@@ -57,14 +57,6 @@ docker build -t carbon-footprint-calculator .
 docker run -p 8080:8080 carbon-footprint-calculator
 ```
 
-## Contributing
-
-1. Fork the repository
-2. Create a new branch: `git checkout -b feature-name`
-3. Make your changes and commit: `git commit -m 'Add feature'`
-4. Push to your branch: `git push origin feature-name`
-5. Submit a Pull Request
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
