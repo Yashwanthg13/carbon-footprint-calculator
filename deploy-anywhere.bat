@@ -126,6 +126,7 @@ goto menu
 :error
 echo.
 echo Error occurred! Check the error messages above.
+echo Error occurred! Check the error messages above.
 pause
 goto menu
 
