@@ -2,6 +2,7 @@
   command = "chmod +x ./mvnw && ./mvnw clean package -DskipTests"
   publish = "target/classes"
   ignore = "git diff --quiet HEAD^ HEAD ./"
+    ignore = "git diff --quiet HEAD^ HEAD ./"
 
 [build.environment]
   JAVA_VERSION = "17"
